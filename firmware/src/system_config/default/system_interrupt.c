@@ -62,14 +62,35 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include "system/common/sys_common.h"
 #include "app.h"
 #include "system_definitions.h"
-
+#include "app_sdcard_write.c"
+extern APP_DATA appData;
 // *****************************************************************************
 // *****************************************************************************
 // Section: System Interrupt Vector Functions
 // *****************************************************************************
 // *****************************************************************************
 
+void __ISR(_ADC_VECTOR, ipl3AUTO) _IntHandlerDrvAdc(void)
+{
+    
+    //if(DRV_ADC_SamplesAvailable()){
+        AD1CON1bits.DONE = 0;
+        int i;
+        for(i=0;i<16;i++){
+            appData.samples[appData.samplePlace] = DRV_ADC_SamplesRead(i) >> 2;
+            appData.samplePlace++;
+        }
 
+        if(appData.samplePlace >= bufferSize){
+            appData.state = APP_STATE_SERVICE_TASKS;
+            appData.samplePlace = 0;
+            AD1CON1bits.DONE = 0;
+        }
+    //}
+   /* Clear ADC Interrupt Flag */
+   PLIB_INT_SourceFlagClear(INT_ID_0, INT_SOURCE_ADC_1);
+}
+ 
 
 void __ISR(_TIMER_1_VECTOR, ipl1AUTO) IntHandlerDrvTmrInstance0(void)
 {

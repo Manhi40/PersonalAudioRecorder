@@ -8,6 +8,7 @@
 #include "app_sdcard_write.h"
 #include "system/fs/src/sys_fs_local.h"
 #include "driver/sdcard/src/drv_sdcard_local.h"
+#include "system/common/sys_buffer.h"
 
 extern APP_DATA appData;
 APP_SDCARD_WRITE_DATA appSDcardWriteData;
@@ -21,7 +22,7 @@ void APP_SDCARD_WRITE_Initialize(void){
 
 static bool APP_SDCARD_WIRTE_Write_SDCard(
     const DRV_HANDLE handle,
-    uint16_t* const pBuffer,
+    uint8_t* const pBuffer,
     const uint16_t bytesToWrite,
     uint16_t*const pNumBytesWrote
 )
@@ -94,27 +95,24 @@ void APP_SDCARD_WRITE_Tasks(void){
                 
                 //Calculates the remaining number of bytes to write
                 //nBytesToWrite = sizeof(appSDcardWriteData.dataParser.buffer) - 
-                        appSDcardWriteData.dataParser.nElements;
-                nBytesToWrite = 4096;
+                      //  appSDcardWriteData.dataParser.nElements;
+                nBytesToWrite = bufferSize;
 
                 //writes data and checks if successful, if not, data writing is done
                 
                 //strcpy(appSDcardWriteData.dataParser.buffer, appData.samples);
-                Nop();
-
+                //strcpy(appSDcardWriteData.dataParser.buffer, appData.samples);
                 SYS_FS_FileSeek(appSDcardWriteData.fileHandle, appSDcardWriteData.currentFilePosition, SYS_FS_SEEK_SET);
                 if(APP_SDCARD_WIRTE_Write_SDCard(
                         appSDcardWriteData.fileHandle,
                         &appData.samples[0],
                         nBytesToWrite, &nBytesWrote)){
-                    appSDcardWriteData.dataParser.nElements += nBytesWrote;
                     appSDcardWriteData.currentFilePosition += nBytesWrote;
                     
                 }
                 //appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_WRITE;
-                SYS_FS_RESULT test = 0;
-                test = SYS_FS_FileClose(appSDcardWriteData.fileHandle);
-                appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_CURRENT_DRIVE_SET;
+                SYS_FS_FileSync(appSDcardWriteData.fileHandle);
+                //appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_CURRENT_DRIVE_SET;
 
                 appData.state = APP_STATE_ADC_WAIT;
                 //PLIB_ADC_Enable(DRV_ADC_ID_1);

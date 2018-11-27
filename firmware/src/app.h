@@ -65,6 +65,8 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 extern "C" {
 
 #endif
+    
+#define bufferSize 10240
 // DOM-IGNORE-END 
 
 // *****************************************************************************
@@ -114,7 +116,7 @@ typedef struct
 {
     /* The application's current state */
     APP_STATES state;
-    uint16_t samples[4096];
+    uint8_t samples[bufferSize];
     uint16_t samplePlace;
     /* TODO: Define any additional data used by the application. */
 
