@@ -91,6 +91,26 @@ extern "C" {
 #define SYS_PORT_AD1PCFG        ~0xffff
 #define SYS_PORT_CNPUE          0x0
 #define SYS_PORT_CNEN           0x0
+#define SYS_PORT_B_TRIS         0xFFFF
+#define SYS_PORT_B_LAT          0x0000
+#define SYS_PORT_B_ODC          0x0000
+
+#define SYS_PORT_C_TRIS         0xFFFF
+#define SYS_PORT_C_LAT          0x0000
+#define SYS_PORT_C_ODC          0x0000
+
+#define SYS_PORT_D_TRIS         0xFFFF
+#define SYS_PORT_D_LAT          0x0000
+#define SYS_PORT_D_ODC          0x0000
+
+#define SYS_PORT_E_TRIS         0xFFFF
+#define SYS_PORT_E_LAT          0x0000
+#define SYS_PORT_E_ODC          0x0000
+
+#define SYS_PORT_F_TRIS         0xFFFF
+#define SYS_PORT_F_LAT          0x0000
+#define SYS_PORT_F_ODC          0x0000
+
 #define SYS_PORT_G_TRIS         0xFFFF
 #define SYS_PORT_G_LAT          0x0000
 #define SYS_PORT_G_ODC          0x0000
@@ -181,7 +201,7 @@ extern "C" {
 #define DRV_SPI_SPI_PROTOCOL_TYPE_IDX0 		DRV_SPI_PROTOCOL_TYPE_STANDARD
 #define DRV_SPI_COMM_WIDTH_IDX0 			SPI_COMMUNICATION_WIDTH_8BITS
 #define DRV_SPI_SPI_CLOCK_IDX0 				CLK_BUS_PERIPHERAL_1
-#define DRV_SPI_BAUD_RATE_IDX0 				2000000
+#define DRV_SPI_BAUD_RATE_IDX0 				20000000
 #define DRV_SPI_BUFFER_TYPE_IDX0 			DRV_SPI_BUFFER_TYPE_STANDARD
 #define DRV_SPI_CLOCK_MODE_IDX0 			DRV_SPI_CLOCK_MODE_IDLE_LOW_EDGE_FALL
 #define DRV_SPI_INPUT_PHASE_IDX0 			SPI_INPUT_SAMPLING_PHASE_AT_END

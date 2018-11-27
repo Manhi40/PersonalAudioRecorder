@@ -58,6 +58,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include "system/fs/fat_fs/src/file_system/ffconf.h"
 #include "system/fs/fat_fs/src/hardware_access/diskio.h"
 #include "system/tmr/sys_tmr.h"
+#include "driver/adc/drv_adc_static.h"
 #include "driver/tmr/drv_tmr.h"
 #include "system/ports/sys_ports.h"
 #include "driver/sdcard/drv_sdcard.h"

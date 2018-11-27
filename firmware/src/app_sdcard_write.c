@@ -6,23 +6,36 @@
  */
 
 #include "app_sdcard_write.h"
+#include "system/fs/src/sys_fs_local.h"
+#include "driver/sdcard/src/drv_sdcard_local.h"
 
-
+extern APP_DATA appData;
 APP_SDCARD_WRITE_DATA appSDcardWriteData;
 
 void APP_SDCARD_WRITE_Initialize(void){
     appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_MOUNT;
     appSDcardWriteData.currentFilePosition = 0;
+    appSDcardWriteData.dataParser.nElements = 0;
+    //strcpy(appSDcardWriteData.dataParser.buffer, "this is a test");
 }
 
-static bool APP_SDCARD_WIRTE_Read_SDCard(
+static bool APP_SDCARD_WIRTE_Write_SDCard(
     const DRV_HANDLE handle,
-    uint8_t* const pBuffer,
-    const uint16_t requestedBytes,
-    uint16_t*const pNumBytesRead
+    uint16_t* const pBuffer,
+    const uint16_t bytesToWrite,
+    uint16_t*const pNumBytesWrote
 )
 {
-    
+    uint32_t nBytesWrote = 0;
+    bool isSuccess = true;
+    nBytesWrote = SYS_FS_FileWrite(handle, (void *)pBuffer, bytesToWrite);
+    if((int32_t)nBytesWrote == -1){
+        if(SYS_FS_FileEOF(handle)){
+            isSuccess = false;
+        }
+    }
+    *pNumBytesWrote = (uint16_t)nBytesWrote;
+    return isSuccess;
 }
 
 
@@ -30,6 +43,8 @@ static bool APP_SDCARD_WIRTE_Read_SDCard(
 void APP_SDCARD_WRITE_Tasks(void){
     switch(appSDcardWriteData.state){
         case APP_SDCARD_WRITE_STATE_CARD_MOUNT:
+            
+            //waits for SDcard to be mounted
             if(SYS_FS_Mount("/dev/mmcblka1", "/mnt/myDrive", FAT, 0, NULL) != 0){
                 appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_MOUNT;
             }
@@ -38,40 +53,74 @@ void APP_SDCARD_WRITE_Tasks(void){
             }
             break;
         case APP_SDCARD_WRITE_STATE_CARD_CURRENT_DRIVE_SET:
+            
+            //checks if SDcard is properly mounted
             if(SYS_FS_CurrentDriveSet("/mnt/myDrive") == SYS_FS_RES_FAILURE){
                 appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_ERROR;
             }
+            //if properly mounted, open "test.txt"
             else{
-                appSDcardWriteData.fileHandle = SYS_FS_FileOpen("test.txt", (SYS_FS_FILE_OPEN_READ));
+                appSDcardWriteData.fileHandle = SYS_FS_FileOpen("test.txt", (SYS_FS_FILE_OPEN_WRITE));
                 if(appSDcardWriteData.fileHandle == SYS_FS_HANDLE_INVALID){
                     appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_ERROR;
                 }
+                
+                // if all is good, move onto reading the file size
                 else{
-                    appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_READ_FILE_SIZE;
+                    appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_WRITE;
                 }
             }
             break;
         case APP_SDCARD_WRITE_STATE_READ_FILE_SIZE:
+            //read the file size
             appSDcardWriteData.fileSize = SYS_FS_FileSize(appSDcardWriteData.fileHandle);
+            //if unsuccessful, move to error state
             if(appSDcardWriteData.fileSize == -1){
                 appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_ERROR;
             }
+            //on success, move onto writing to the card
             else{
-                appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_READ;
+                appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_WRITE;
             }
             break;
-        case APP_SDCARD_WRITE_STATE_CARD_READ:
+        
+        case APP_SDCARD_WRITE_STATE_CARD_WRITE:
         {
-            uint16_t nBytesRead = 0;
-            uint16_t nBytesParsed = 0;
-            uint8_t data[5];
-            if(appSDcardWriteData.currentFilePosition < appSDcardWriteData.fileSize){
-                //READ DATA BOYYYSSS
-                SYS_FS_FileRead(appSDcardWriteData.fileHandle,&data,5);
+            uint16_t nBytesWrote = 0;
+            uint16_t nBytesToWrite = 0;
+            
+            //if statement checks if we still have data to write
+            if(sizeof(appData.samples) > 0){
                 
+                //Calculates the remaining number of bytes to write
+                //nBytesToWrite = sizeof(appSDcardWriteData.dataParser.buffer) - 
+                        appSDcardWriteData.dataParser.nElements;
+                nBytesToWrite = 4096;
+
+                //writes data and checks if successful, if not, data writing is done
+                
+                //strcpy(appSDcardWriteData.dataParser.buffer, appData.samples);
+                Nop();
+
+                SYS_FS_FileSeek(appSDcardWriteData.fileHandle, appSDcardWriteData.currentFilePosition, SYS_FS_SEEK_SET);
+                if(APP_SDCARD_WIRTE_Write_SDCard(
+                        appSDcardWriteData.fileHandle,
+                        &appData.samples[0],
+                        nBytesToWrite, &nBytesWrote)){
+                    appSDcardWriteData.dataParser.nElements += nBytesWrote;
+                    appSDcardWriteData.currentFilePosition += nBytesWrote;
+                    
+                }
+                //appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_WRITE;
+                SYS_FS_RESULT test = 0;
+                test = SYS_FS_FileClose(appSDcardWriteData.fileHandle);
+                appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_CURRENT_DRIVE_SET;
+
+                appData.state = APP_STATE_ADC_WAIT;
+                //PLIB_ADC_Enable(DRV_ADC_ID_1);
             }
-            SYS_FS_FileWrite(appSDcardWriteData.fileHandle,"WE HAVE WRITING?",16);
         }
+            break;
         default:
         {}
         break;
