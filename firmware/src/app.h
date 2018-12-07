@@ -66,7 +66,7 @@ extern "C" {
 
 #endif
     
-#define bufferSize 10240
+#define bufferSize 4096
 // DOM-IGNORE-END 
 
 // *****************************************************************************
@@ -116,7 +116,7 @@ typedef struct
 {
     /* The application's current state */
     APP_STATES state;
-    uint8_t samples[bufferSize];
+    int8_t samples[bufferSize];
     uint16_t samplePlace;
     /* TODO: Define any additional data used by the application. */
 

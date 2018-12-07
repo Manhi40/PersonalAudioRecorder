@@ -77,7 +77,7 @@ void __ISR(_ADC_VECTOR, ipl3AUTO) _IntHandlerDrvAdc(void)
         AD1CON1bits.DONE = 0;
         int i;
         for(i=0;i<16;i++){
-            appData.samples[appData.samplePlace] = DRV_ADC_SamplesRead(i) >> 2;
+            appData.samples[appData.samplePlace] = (DRV_ADC_SamplesRead(i)-512) >> 2;
             appData.samplePlace++;
         }
 
