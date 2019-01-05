@@ -62,6 +62,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include "system/common/sys_common.h"
 #include "app.h"
 #include "system_definitions.h"
+
 #include "app_sdcard_write.c"
 extern APP_DATA appData;
 // *****************************************************************************
@@ -70,10 +71,18 @@ extern APP_DATA appData;
 // *****************************************************************************
 // *****************************************************************************
 
+
+void __ISR(_DMA0_VECTOR, ipl1AUTO) _IntHandlerSysDmaCh0(void)
+{       
+    appData.state = APP_STATE_SERVICE_TASKS;
+    AD1CON1bits.DONE = 0;
+    SYS_DMA_Tasks(sysObj.sysDma, DMA_CHANNEL_0);
+}
+
 void __ISR(_ADC_VECTOR, ipl3AUTO) _IntHandlerDrvAdc(void)
 {
     
-    //if(DRV_ADC_SamplesAvailable()){
+    /*if(DRV_ADC_SamplesAvailable()){
         AD1CON1bits.DONE = 0;
         int i;
         for(i=0;i<16;i++){
@@ -97,7 +106,7 @@ void __ISR(_TIMER_1_VECTOR, ipl1AUTO) IntHandlerDrvTmrInstance0(void)
     DRV_TMR_Tasks(sysObj.drvTmr0);
 }
  
-void __ISR(_SPI_2_VECTOR, ipl3AUTO) _IntHandlerSPIInstance0(void)
+void __ISR(_SPI_2_VECTOR, ipl2AUTO) _IntHandlerSPIInstance0(void)
 {
     DRV_SPI_Tasks(sysObj.spiObjectIdx0);
 }

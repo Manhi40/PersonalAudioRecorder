@@ -157,6 +157,15 @@ SYSTEM_OBJECTS sysObj;
 // Section: Module Initialization Data
 // *****************************************************************************
 // *****************************************************************************
+//<editor-fold defaultstate="collapsed" desc="SYS_DMA Initialization Data">
+/*** System DMA Initialization Data ***/
+
+const SYS_DMA_INIT sysDmaInit =
+{
+	.sidl = SYS_DMA_SIDL_DISABLE,
+
+};
+// </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="SYS_FS Initialization Data">
 /*** File System Initialization Data ***/
 
@@ -218,6 +227,13 @@ void SYS_Initialize ( void* data )
     SYS_DEVCON_JTAGDisable();
 
     /* Initialize Drivers */
+    sysObj.sysDma = SYS_DMA_Initialize((SYS_MODULE_INIT *)&sysDmaInit);
+    SYS_INT_VectorPrioritySet(INT_VECTOR_DMA0, INT_PRIORITY_LEVEL1);
+    SYS_INT_VectorSubprioritySet(INT_VECTOR_DMA0, INT_SUBPRIORITY_LEVEL0);
+
+    SYS_INT_SourceEnable(INT_SOURCE_DMA_0);
+
+
 
     /* Initialize ADC */
     DRV_ADC_Initialize();

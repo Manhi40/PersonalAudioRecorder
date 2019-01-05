@@ -117,6 +117,12 @@ void APP_Initialize ( void )
 {
     /* Place the App state machine in its initial state. */
     appData.state = APP_STATE_INIT;
+    
+    appData.channelHandle = SYS_DMA_ChannelAllocate(DMA_CHANNEL_0);
+    SYS_DMA_ChannelSetup(appData.channelHandle, SYS_DMA_CHANNEL_OP_MODE_AUTO, DMA_TRIGGER_ADC_1);
+    SYS_DMA_ChannelTransferAdd(appData.channelHandle, &ADC1BUF0, 1, &appData.samples, 0, 16);
+    SYS_DMA_ChannelEnable(appData.channelHandle);
+    
 
     
     APP_SDCARD_WRITE_Initialize();

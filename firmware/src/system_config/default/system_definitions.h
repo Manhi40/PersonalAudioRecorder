@@ -52,6 +52,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include "system/devcon/sys_devcon.h"
 #include "system/clk/sys_clk.h"
 #include "system/int/sys_int.h"
+#include "system/dma/sys_dma.h"
 #include "system/fs/sys_fs.h"
 #include "system/fs/sys_fs_media_manager.h"
 #include "system/fs/fat_fs/src/file_system/ff.h"
@@ -99,6 +100,7 @@ extern "C" {
 typedef struct
 {
     SYS_MODULE_OBJ  sysTmr;
+    SYS_MODULE_OBJ  sysDma;
     SYS_MODULE_OBJ  drvTmr0;
 
     SYS_MODULE_OBJ  drvSDCard;
