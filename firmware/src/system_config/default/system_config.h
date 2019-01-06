@@ -83,37 +83,66 @@ extern "C" {
 */
 #define SYS_CLK_FREQ                        80000000ul
 #define SYS_CLK_BUS_PERIPHERAL_1            80000000ul
-#define SYS_CLK_UPLL_BEFORE_DIV2_FREQ       48000000ul
+#define SYS_CLK_UPLL_BEFORE_DIV2_FREQ       144000000ul
 #define SYS_CLK_CONFIG_PRIMARY_XTAL         0ul
 #define SYS_CLK_CONFIG_SECONDARY_XTAL       32768ul
    
 /*** Ports System Service Configuration ***/
-#define SYS_PORT_AD1PCFG        ~0xffff
-#define SYS_PORT_CNPUE          0x0
-#define SYS_PORT_CNEN           0x0
-#define SYS_PORT_B_TRIS         0xFFFF
+#define SYS_PORT_A_ANSEL        0xFFE3
+#define SYS_PORT_A_TRIS         0xFFFF
+#define SYS_PORT_A_LAT          0x0000
+#define SYS_PORT_A_ODC          0x0000
+#define SYS_PORT_A_CNPU         0x0000
+#define SYS_PORT_A_CNPD         0x0000
+#define SYS_PORT_A_CNEN         0x0000
+
+#define SYS_PORT_B_ANSEL        0x9E28
+#define SYS_PORT_B_TRIS         0xBFF9
 #define SYS_PORT_B_LAT          0x0000
 #define SYS_PORT_B_ODC          0x0000
+#define SYS_PORT_B_CNPU         0x0000
+#define SYS_PORT_B_CNPD         0x0000
+#define SYS_PORT_B_CNEN         0x0000
 
+#define SYS_PORT_C_ANSEL        0xFFFF
 #define SYS_PORT_C_TRIS         0xFFFF
 #define SYS_PORT_C_LAT          0x0000
 #define SYS_PORT_C_ODC          0x0000
+#define SYS_PORT_C_CNPU         0x0000
+#define SYS_PORT_C_CNPD         0x0000
+#define SYS_PORT_C_CNEN         0x0000
 
+#define SYS_PORT_D_ANSEL        0xF000
 #define SYS_PORT_D_TRIS         0xFFFF
 #define SYS_PORT_D_LAT          0x0000
 #define SYS_PORT_D_ODC          0x0000
+#define SYS_PORT_D_CNPU         0x0000
+#define SYS_PORT_D_CNPD         0x0000
+#define SYS_PORT_D_CNEN         0x0000
 
+#define SYS_PORT_E_ANSEL        0xFFE0
 #define SYS_PORT_E_TRIS         0xFFFF
 #define SYS_PORT_E_LAT          0x0000
 #define SYS_PORT_E_ODC          0x0000
+#define SYS_PORT_E_CNPU         0x0000
+#define SYS_PORT_E_CNPD         0x0000
+#define SYS_PORT_E_CNEN         0x0000
 
+#define SYS_PORT_F_ANSEL        0xFFC4
 #define SYS_PORT_F_TRIS         0xFFFF
 #define SYS_PORT_F_LAT          0x0000
 #define SYS_PORT_F_ODC          0x0000
+#define SYS_PORT_F_CNPU         0x0000
+#define SYS_PORT_F_CNPD         0x0000
+#define SYS_PORT_F_CNEN         0x0000
 
+#define SYS_PORT_G_ANSEL        0xFFFF
 #define SYS_PORT_G_TRIS         0xFFFF
 #define SYS_PORT_G_LAT          0x0000
 #define SYS_PORT_G_ODC          0x0000
+#define SYS_PORT_G_CNPU         0x0000
+#define SYS_PORT_G_CNPD         0x0000
+#define SYS_PORT_G_CNEN         0x0000
 
 
 /*** File System Service Configuration ***/
@@ -175,7 +204,7 @@ extern "C" {
 
 
 /*** SPI Driver Configuration ***/
-#define DRV_SPI_NUMBER_OF_MODULES		1
+#define DRV_SPI_NUMBER_OF_MODULES		2
 /*** Driver Compilation and static configuration options. ***/
 /*** Select SPI compilation units.***/
 #define DRV_SPI_POLLED 				0
@@ -183,7 +212,7 @@ extern "C" {
 #define DRV_SPI_MASTER 				1
 #define DRV_SPI_SLAVE 				0
 #define DRV_SPI_RM 					1
-#define DRV_SPI_EBM 				0
+#define DRV_SPI_EBM 				1
 #define DRV_SPI_8BIT 				1
 #define DRV_SPI_16BIT 				0
 #define DRV_SPI_32BIT 				0
@@ -194,12 +223,13 @@ extern "C" {
 #define DRV_SPI_CLIENTS_NUMBER 			1
 #define DRV_SPI_ELEMENTS_PER_QUEUE 		10
 /* SPI Driver Instance 0 Configuration */
-#define DRV_SPI_SPI_ID_IDX0 				SPI_ID_2
+#define DRV_SPI_SPI_ID_IDX0 				SPI_ID_1
 #define DRV_SPI_TASK_MODE_IDX0 				DRV_SPI_TASK_MODE_ISR
 #define DRV_SPI_SPI_MODE_IDX0				DRV_SPI_MODE_MASTER
 #define DRV_SPI_ALLOW_IDLE_RUN_IDX0			false
 #define DRV_SPI_SPI_PROTOCOL_TYPE_IDX0 		DRV_SPI_PROTOCOL_TYPE_STANDARD
 #define DRV_SPI_COMM_WIDTH_IDX0 			SPI_COMMUNICATION_WIDTH_8BITS
+#define DRV_SPI_CLOCK_SOURCE_IDX0 		    SPI_BAUD_RATE_PBCLK_CLOCK
 #define DRV_SPI_SPI_CLOCK_IDX0 				CLK_BUS_PERIPHERAL_1
 #define DRV_SPI_BAUD_RATE_IDX0 				20000000
 #define DRV_SPI_BUFFER_TYPE_IDX0 			DRV_SPI_BUFFER_TYPE_STANDARD
@@ -207,10 +237,10 @@ extern "C" {
 #define DRV_SPI_INPUT_PHASE_IDX0 			SPI_INPUT_SAMPLING_PHASE_AT_END
 #define DRV_SPI_TRANSMIT_DUMMY_BYTE_VALUE_IDX0      0xFF
 
-#define DRV_SPI_TX_INT_SOURCE_IDX0 			INT_SOURCE_SPI_2_TRANSMIT
-#define DRV_SPI_RX_INT_SOURCE_IDX0 			INT_SOURCE_SPI_2_RECEIVE
-#define DRV_SPI_ERROR_INT_SOURCE_IDX0 		INT_SOURCE_SPI_2_ERROR
-#define DRV_SPI_INT_VECTOR_IDX0				INT_VECTOR_SPI2
+#define DRV_SPI_TX_INT_SOURCE_IDX0 			INT_SOURCE_SPI_1_TRANSMIT
+#define DRV_SPI_RX_INT_SOURCE_IDX0 			INT_SOURCE_SPI_1_RECEIVE
+#define DRV_SPI_ERROR_INT_SOURCE_IDX0 		INT_SOURCE_SPI_1_ERROR
+#define DRV_SPI_INT_VECTOR_IDX0				INT_VECTOR_SPI1
 #define DRV_SPI_INT_PRIORITY_IDX0			INT_PRIORITY_LEVEL2
 #define DRV_SPI_INT_SUB_PRIORITY_IDX0		INT_SUBPRIORITY_LEVEL2        
 #define DRV_SPI_QUEUE_SIZE_IDX0 			10

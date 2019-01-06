@@ -162,6 +162,7 @@
                   <logicalFolder name="f1" displayName="dynamic" projectFiles="true">
                     <itemPath>../src/system_config/default/framework/driver/spi/dynamic/drv_spi_tasks.c</itemPath>
                     <itemPath>../src/system_config/default/framework/driver/spi/dynamic/drv_spi_api.c</itemPath>
+                    <itemPath>../src/system_config/default/framework/driver/spi/dynamic/drv_spi_master_ebm_tasks.c</itemPath>
                     <itemPath>../src/system_config/default/framework/driver/spi/dynamic/drv_spi_master_rm_tasks.c</itemPath>
                   </logicalFolder>
                 </logicalFolder>
@@ -265,7 +266,7 @@
     <conf name="default" type="2">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
-        <targetDevice>PIC32MX440F256H</targetDevice>
+        <targetDevice>PIC32MX274F256B</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
         <platformTool>PICkit3PlatformTool</platformTool>
@@ -276,7 +277,7 @@
       <compileType>
         <linkerTool>
           <linkerLibItems>
-            <linkerLibFileItem>../../../../bin/framework/peripheral/PIC32MX440F256H_peripherals.a</linkerLibFileItem>
+            <linkerLibFileItem>../../../../bin/framework/peripheral/PIC32MX274F256B_peripherals.a</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
         <archiverTool>
@@ -320,7 +321,6 @@
         <property key="strict-ansi" value="false"/>
         <property key="support-ansi" value="false"/>
         <property key="toplevel-reordering" value=""/>
-        <property key="unaligned-access" value=""/>
         <property key="use-cci" value="false"/>
         <property key="use-iar" value="false"/>
         <property key="use-indirect-calls" value="false"/>
@@ -410,7 +410,6 @@
         <property key="rtti" value="true"/>
         <property key="strict-ansi" value="false"/>
         <property key="toplevel-reordering" value=""/>
-        <property key="unaligned-access" value=""/>
         <property key="use-cci" value="false"/>
         <property key="use-iar" value="false"/>
         <property key="use-indirect-calls" value="false"/>
@@ -419,9 +418,6 @@
         <property key="common-include-directories" value=""/>
         <property key="gp-relative-option" value=""/>
         <property key="legacy-libc" value="false"/>
-        <property key="mdtcm" value=""/>
-        <property key="mitcm" value=""/>
-        <property key="mstacktcm" value="false"/>
         <property key="relaxed-math" value="false"/>
         <property key="save-temps" value="false"/>
         <property key="wpo-lto" value="false"/>
@@ -431,8 +427,10 @@
         <property key="AutoSelectMemRanges" value="auto"/>
         <property key="CHANGE NOTICE" value="true"/>
         <property key="COMPARATOR" value="true"/>
+        <property key="CTMU" value="true"/>
         <property key="DMA" value="true"/>
         <property key="Freeze All Other Peripherals" value="true"/>
+        <property key="HLVD" value="true"/>
         <property key="I2C1" value="true"/>
         <property key="I2C2" value="true"/>
         <property key="INPUT CAPTURE 1" value="true"/>
@@ -448,7 +446,9 @@
         <property key="OUTPUT COMPARE 5" value="true"/>
         <property key="PARALLEL MASTER/SLAVE PORT" value="true"/>
         <property key="REAL TIME CLOCK" value="true"/>
-        <property key="SPI 2" value="true"/>
+        <property key="REFERENCE CLOCK1" value="true"/>
+        <property key="SPI/I2S 1" value="true"/>
+        <property key="SPI/I2S 2" value="true"/>
         <property key="SecureSegment.SegmentProgramming" value="FullChipProgramming"/>
         <property key="TIMER1" value="true"/>
         <property key="TIMER2" value="true"/>
@@ -460,7 +460,7 @@
         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
         <property key="UART1" value="true"/>
         <property key="UART2" value="true"/>
-        <property key="firmware.download.all" value="false"/>
+        <property key="USB" value="true"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="true"/>
@@ -474,7 +474,8 @@
         <property key="memories.instruction.ram.ranges"
                   value="${memories.instruction.ram.ranges}"/>
         <property key="memories.programmemory" value="true"/>
-        <property key="memories.programmemory.ranges" value="1d000000-1d003fff"/>
+        <property key="memories.programmemory.ranges"
+                  value="${memories.programmemory.ranges.default}"/>
         <property key="poweroptions.powerenable" value="true"/>
         <property key="programmertogo.imagename" value=""/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
@@ -490,7 +491,7 @@
         <property key="programoptions.preserveuserid" value="false"/>
         <property key="programoptions.programcalmem" value="false"/>
         <property key="programoptions.programuserotp" value="false"/>
-        <property key="programoptions.testmodeentrymethod" value="VPPFirst"/>
+        <property key="programoptions.testmodeentrymethod" value="VDDFirst"/>
         <property key="programoptions.usehighvoltageonmclr" value="false"/>
         <property key="programoptions.uselvpprogramming" value="false"/>
         <property key="voltagevalue" value="3.25"/>

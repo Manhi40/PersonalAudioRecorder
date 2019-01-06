@@ -6,7 +6,7 @@
   </DisplayManager>
   <General>
     <HarmonyPath dnOrder="0" path="../.."/>
-    <Processor dnOrder="1" name="PIC32MX440F256H"/>
+    <Processor dnOrder="1" name="PIC32MX274F256B"/>
     <Board dnOrder="2" name=" "/>
     <ForceOptimization dnOrder="3" flag="true"/>
     <MergeStrategy dnOrder="4" flag="USER_ALL"/>
@@ -777,12 +777,12 @@
       <Template dnOrder="1">
         <Name dnOrder="0">sys_ports_static.c</Name>
         <Path dnOrder="1">Source&amp;#160;Files/app/system_config/default/framework/system/ports/src</Path>
-        <Checksum dnOrder="2">BD149D7E9B670BA82014F302FACCE5CB</Checksum>
+        <Checksum dnOrder="2">A3C5A1955EC423722C4DFF0DA7FFA493</Checksum>
       </Template>
       <Template dnOrder="2">
         <Name dnOrder="0">system_init.c</Name>
         <Path dnOrder="1">Source&amp;#160;Files/app/system_config/default</Path>
-        <Checksum dnOrder="2">86479B86411D35543A80A3E112544D2A</Checksum>
+        <Checksum dnOrder="2">A2557D24F5EC3800F37D096D5F67C102</Checksum>
       </Template>
       <Template dnOrder="3">
         <Name dnOrder="0">main.c</Name>
@@ -806,7 +806,7 @@
       <Template dnOrder="7">
         <Name dnOrder="0">drv_adc_static.h</Name>
         <Path dnOrder="1">Header&amp;#160;Files/app/system_config/default/framework/driver/adc</Path>
-        <Checksum dnOrder="2">E6A65A20961862B8559CDA0841874926</Checksum>
+        <Checksum dnOrder="2">5274B3CAB514E4D495EF54E6C3BFDC80</Checksum>
       </Template>
       <Template dnOrder="8">
         <Name dnOrder="0">sys_devcon.c</Name>
@@ -816,7 +816,7 @@
       <Template dnOrder="9">
         <Name dnOrder="0">drv_adc_static.c</Name>
         <Path dnOrder="1">Source&amp;#160;Files/app/system_config/default/framework/driver/adc/src</Path>
-        <Checksum dnOrder="2">0DB2EBCA7DAF7AE2CC76057B054F2504</Checksum>
+        <Checksum dnOrder="2">4730CF61EF4031E32E2F07FD98B9DA96</Checksum>
       </Template>
       <Template dnOrder="10">
         <Name dnOrder="0">app.c</Name>
@@ -835,7 +835,7 @@
       <Template dnOrder="13">
         <Name dnOrder="0">drv_spi_tasks.c</Name>
         <Path dnOrder="1">Source&amp;#160;Files/app/system_config/default/framework/driver/spi/dynamic</Path>
-        <Checksum dnOrder="2">446C0640C45D77DC92EF9B40EBDA1DFF</Checksum>
+        <Checksum dnOrder="2">DF06B46C9F0349D36654BF075CFFB71B</Checksum>
       </Template>
       <Template dnOrder="14">
         <Name dnOrder="0">sys_devcon.h</Name>
@@ -850,12 +850,12 @@
       <Template dnOrder="16">
         <Name dnOrder="0">sys_devcon_pic32mx.c</Name>
         <Path dnOrder="1">Source&amp;#160;Files/app/system_config/default/framework/system/devcon/src</Path>
-        <Checksum dnOrder="2">5141464248E33ABE9E7D144A2D4DC129</Checksum>
+        <Checksum dnOrder="2">7939A9555363E85AFFB1AE7BF25593D3</Checksum>
       </Template>
       <Template dnOrder="17">
         <Name dnOrder="0">system_config.h</Name>
         <Path dnOrder="1">Header&amp;#160;Files/app/system_config/default</Path>
-        <Checksum dnOrder="2">593C7BDCA2BE1D72F48A32872A168F8B</Checksum>
+        <Checksum dnOrder="2">06189B9F34A45F5A91CAB1D902846F44</Checksum>
       </Template>
       <Template dnOrder="18">
         <Name dnOrder="0">app.h</Name>
@@ -864,18 +864,23 @@
       <Template dnOrder="19">
         <Name dnOrder="0">system_interrupt.c</Name>
         <Path dnOrder="1">Source&amp;#160;Files/app/system_config/default</Path>
-        <Checksum dnOrder="2">8AC0B438AE311313A983ED16C480F65E</Checksum>
+        <Checksum dnOrder="2">ADE5729444C0CB974BB4DB37E9353AEB</Checksum>
         <ProjectFileChecksum dnOrder="3">FBB6691CAA5135D3EC4A776954F34560</ProjectFileChecksum>
       </Template>
       <Template dnOrder="20">
-        <Name dnOrder="0">drv_spi_api.c</Name>
+        <Name dnOrder="0">drv_spi_master_ebm_tasks.c</Name>
         <Path dnOrder="1">Source&amp;#160;Files/app/system_config/default/framework/driver/spi/dynamic</Path>
-        <Checksum dnOrder="2">8AB6BB7815E0B4A2A788E370FADCDCE5</Checksum>
+        <Checksum dnOrder="2">DF2E896C1FA81F4B5056E3B22DD340B6</Checksum>
       </Template>
       <Template dnOrder="21">
+        <Name dnOrder="0">drv_spi_api.c</Name>
+        <Path dnOrder="1">Source&amp;#160;Files/app/system_config/default/framework/driver/spi/dynamic</Path>
+        <Checksum dnOrder="2">D40E73B0CCA3C308DD0C10E1A5FFFFBC</Checksum>
+      </Template>
+      <Template dnOrder="22">
         <Name dnOrder="0">sys_clk_pic32mx.c</Name>
         <Path dnOrder="1">Source&amp;#160;Files/app/system_config/default/framework/system/clk/src</Path>
-        <Checksum dnOrder="2">FDF6C8068CFFAEEC5F8537A8D6514230</Checksum>
+        <Checksum dnOrder="2">414614ADF5119836C3646F3BDC5F076F</Checksum>
       </Template>
     </Templates>
     <CompilerItems dnOrder="2">
@@ -888,7 +893,7 @@
       </C32>
     </CompilerItems>
     <Libraries dnOrder="3">
-      <Library dnOrder="0" value="../../../../bin/framework/peripheral/PIC32MX440F256H_peripherals.a"/>
+      <Library dnOrder="0" value="../../../../bin/framework/peripheral/PIC32MX274F256B_peripherals.a"/>
     </Libraries>
   </Manifest>
 </Configuration>

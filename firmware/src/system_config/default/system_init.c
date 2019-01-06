@@ -60,14 +60,16 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 /*** DEVCFG0 ***/
 
 #pragma config DEBUG =      ON
-#pragma config ICESEL =     ICS_PGx2
+#pragma config JTAGEN =     OFF
+#pragma config ICESEL =     ICS_PGx1
+#pragma config SMCLR =      MCLR_NORM
 #pragma config PWP =        OFF
 #pragma config BWP =        OFF
 #pragma config CP =         OFF
 
 /*** DEVCFG1 ***/
 
-#pragma config FNOSC =      FRCPLL
+#pragma config FNOSC =      FRC
 #pragma config FSOSCEN =    ON
 #pragma config IESO =       ON
 #pragma config POSCMOD =    OFF
@@ -75,17 +77,31 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #pragma config FPBDIV =     DIV_1
 #pragma config FCKSM =      CSECMD
 #pragma config WDTPS =      PS1048576
+#pragma config WDTSPGM =    ON
 #pragma config FWDTEN =     OFF
+#pragma config WINDIS =     OFF
+#pragma config FWDTWINSZ =  WINSZ_25
 /*** DEVCFG2 ***/
 
 #pragma config FPLLIDIV =   DIV_2
+#pragma config FPLLICLK =   PLL_FRC
 #pragma config FPLLMUL =    MUL_20
 #pragma config FPLLODIV =   DIV_1
+#pragma config DSBOREN =    ON
+#pragma config DSWDTPS =    DSPS32
+#pragma config DSWDTOSC =   LPRC
+#pragma config DSWDTEN =    OFF
+#pragma config FDSEN =      ON
 #pragma config UPLLIDIV =   DIV_2
 #pragma config UPLLEN =     OFF
 /*** DEVCFG3 ***/
 
 #pragma config USERID =     0xffff
+#pragma config AI2C1 =      OFF
+#pragma config AI2C2 =      OFF
+#pragma config PMDL1WAY =   ON
+#pragma config IOL1WAY =    ON
+#pragma config FUSBIDIO =   ON
 // </editor-fold>
 
 // *****************************************************************************
@@ -98,12 +114,12 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 const DRV_SDCARD_INIT drvSDCardInit =
 {
-    .spiId = SPI_ID_2,
+    .spiId = SPI_ID_1,
     .spiIndex = 0,
     .sdcardSpeedHz = 20000000,
     .spiClk = CLK_BUS_PERIPHERAL_2,
     .chipSelectPort = PORT_CHANNEL_B,
-    .chipSelectBitPosition = PORTS_BIT_POS_13,
+    .chipSelectBitPosition = PORTS_BIT_POS_8,
 };
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="DRV_SPI Initialization Data"> 
@@ -117,6 +133,7 @@ const DRV_SDCARD_INIT drvSDCardInit =
     .allowIdleRun = DRV_SPI_ALLOW_IDLE_RUN_IDX0,
     .spiProtocolType = DRV_SPI_SPI_PROTOCOL_TYPE_IDX0,
     .commWidth = DRV_SPI_COMM_WIDTH_IDX0,
+    .baudClockSource = DRV_SPI_CLOCK_SOURCE_IDX0,
     .spiClk = DRV_SPI_SPI_CLOCK_IDX0,
     .baudRate = DRV_SPI_BAUD_RATE_IDX0,
     .bufferType = DRV_SPI_BUFFER_TYPE_IDX0,
@@ -224,7 +241,6 @@ void SYS_Initialize ( void* data )
     SYS_CLK_Initialize( NULL );
     SYS_DEVCON_Initialize(SYS_DEVCON_INDEX_0, (SYS_MODULE_INIT*)NULL);
     SYS_DEVCON_PerformanceConfig(SYS_CLK_SystemFrequencyGet());
-    SYS_DEVCON_JTAGDisable();
 
     /* Initialize Drivers */
     sysObj.sysDma = SYS_DMA_Initialize((SYS_MODULE_INIT *)&sysDmaInit);

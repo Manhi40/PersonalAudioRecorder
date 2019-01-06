@@ -117,6 +117,11 @@ int32_t DRV_SPI_SetVTable(struct DRV_SPI_DRIVER_OBJECT * driverObject, const DRV
         mode |= _SPI_DRV_VTABLE_RM;
     }
     else
+    if (pInit->bufferType == DRV_SPI_BUFFER_TYPE_ENHANCED)
+    {
+        mode |= _SPI_DRV_VTABLE_EBM;
+    }
+    else
     {
         SYS_ASSERT(false, "\r\nInvalid SPI Configuration.");
         return -1;
@@ -135,6 +140,9 @@ int32_t DRV_SPI_SetVTable(struct DRV_SPI_DRIVER_OBJECT * driverObject, const DRV
     {
     case _SPI_DRV_VTABLE_I_M_R_8:
         driverObject->vfMainTask = DRV_SPI_ISRMasterRM8BitTasks;
+        break;
+    case _SPI_DRV_VTABLE_I_M_E_8:
+        driverObject->vfMainTask = DRV_SPI_ISRMasterEBM8BitTasks;
         break;
     default:
         SYS_ASSERT(false, "\r\nInvalid SPI Configuration.");
@@ -224,6 +232,10 @@ int32_t DRV_SPI_SetupHardware(struct DRV_SPI_DRIVER_OBJECT * driverObject, const
     {
         case DRV_SPI_PROTOCOL_TYPE_STANDARD:
              PLIB_SPI_FramedCommunicationDisable( spiId  );
+             if (PLIB_SPI_ExistsAudioProtocolControl(spiId))
+             {
+                 PLIB_SPI_AudioProtocolDisable(spiId);
+             }
              break;
 
         case DRV_SPI_PROTOCOL_TYPE_FRAMED:
@@ -260,15 +272,21 @@ int32_t DRV_SPI_SetupHardware(struct DRV_SPI_DRIVER_OBJECT * driverObject, const
             #endif
             
 
+            if (PLIB_SPI_ExistsAudioProtocolControl(spiId))
+            {
+                PLIB_SPI_AudioProtocolDisable(spiId);
+            }
             PLIB_SPI_FramedCommunicationEnable( spiId  );
             break;
 
         case DRV_SPI_PROTOCOL_TYPE_AUDIO:
              PLIB_SPI_FramedCommunicationDisable( spiId  );
              
+	     if (PLIB_SPI_ExistsAudioProtocolControl(spiId))
              {
-                 SYS_ASSERT(false, "\r\nInvalid SPI Configuration.");
-                return -1;
+                 PLIB_SPI_AudioTransmitModeSelect(spiId, init->audioTransmitMode);
+                 PLIB_SPI_AudioProtocolModeSelect(spiId, init->audioProtocolMode);
+                 PLIB_SPI_AudioProtocolEnable(spiId);
              }
              break;
         default:
@@ -276,6 +294,26 @@ int32_t DRV_SPI_SetupHardware(struct DRV_SPI_DRIVER_OBJECT * driverObject, const
             return -1;
     }
 
+    switch (init->bufferType)
+    {
+        case DRV_SPI_BUFFER_TYPE_STANDARD:
+            if (PLIB_SPI_ExistsFIFOControl( spiId  ))
+            {
+                PLIB_SPI_FIFODisable( spiId  );
+            }
+            break;
+        case DRV_SPI_BUFFER_TYPE_ENHANCED:
+            if (PLIB_SPI_ExistsFIFOControl( spiId  ))
+            {
+                PLIB_SPI_FIFOEnable( spiId  );
+                PLIB_SPI_FIFOInterruptModeSelect(spiId, SPI_FIFO_INTERRUPT_WHEN_TRANSMIT_BUFFER_IS_COMPLETELY_EMPTY);
+                PLIB_SPI_FIFOInterruptModeSelect(spiId, SPI_FIFO_INTERRUPT_WHEN_RECEIVE_BUFFER_IS_NOT_EMPTY);
+            }
+            break;
+        default:
+             SYS_ASSERT(false, "\r\nInvalid SPI Configuration");
+            return -1;            
+    }
 
     PLIB_SPI_BufferClear( spiId );
     PLIB_SPI_ReceiverOverflowClear ( spiId );
