@@ -10,9 +10,9 @@ CND_CONF=default
 CND_DISTDIR=dist
 TMPDIR=build/${CND_CONF}/${IMAGE_TYPE}/tmp-packaging
 TMPDIRNAME=tmp-packaging
-OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/PersonalAudioRecorderS.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
-OUTPUT_BASENAME=PersonalAudioRecorderS.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
-PACKAGE_TOP_DIR=personalaudiorecorders/
+OUTPUT_PATH=dist/${CND_CONF}/${IMAGE_TYPE}/PersonalAudioRecorder.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+OUTPUT_BASENAME=PersonalAudioRecorder.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+PACKAGE_TOP_DIR=personalaudiorecorder.x/
 
 # Functions
 function checkReturnCode
@@ -57,15 +57,15 @@ mkdir -p ${TMPDIR}
 
 # Copy files and create directories and links
 cd "${TOP}"
-makeDirectory ${TMPDIR}/personalaudiorecorders/bin
+makeDirectory ${TMPDIR}/personalaudiorecorder.x/bin
 copyFileToTmpDir "${OUTPUT_PATH}" "${TMPDIR}/${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}" 0755
 
 
 # Generate tar file
 cd "${TOP}"
-rm -f ${CND_DISTDIR}/${CND_CONF}/package/personalaudiorecorders.tar
+rm -f ${CND_DISTDIR}/${CND_CONF}/package/personalaudiorecorder.x.tar
 cd ${TMPDIR}
-tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/package/personalaudiorecorders.tar *
+tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/package/personalaudiorecorder.x.tar *
 checkReturnCode
 
 # Cleanup

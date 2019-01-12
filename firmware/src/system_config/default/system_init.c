@@ -59,9 +59,9 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 /*** DEVCFG0 ***/
 
-#pragma config DEBUG =      ON
+#pragma config DEBUG =      OFF
 #pragma config JTAGEN =     OFF
-#pragma config ICESEL =     ICS_PGx1
+#pragma config ICESEL =     ICS_PGx2
 #pragma config SMCLR =      MCLR_NORM
 #pragma config PWP =        OFF
 #pragma config BWP =        OFF
@@ -69,13 +69,13 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 /*** DEVCFG1 ***/
 
-#pragma config FNOSC =      FRC
+#pragma config FNOSC =      SPLL
 #pragma config FSOSCEN =    ON
 #pragma config IESO =       ON
 #pragma config POSCMOD =    OFF
-#pragma config OSCIOFNC =   ON
+#pragma config OSCIOFNC =   OFF
 #pragma config FPBDIV =     DIV_1
-#pragma config FCKSM =      CSECMD
+#pragma config FCKSM =      CSDCMD
 #pragma config WDTPS =      PS1048576
 #pragma config WDTSPGM =    ON
 #pragma config FWDTEN =     OFF
@@ -85,7 +85,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 #pragma config FPLLIDIV =   DIV_2
 #pragma config FPLLICLK =   PLL_FRC
-#pragma config FPLLMUL =    MUL_20
+#pragma config FPLLMUL =    MUL_18
 #pragma config FPLLODIV =   DIV_1
 #pragma config DSBOREN =    ON
 #pragma config DSWDTPS =    DSPS32
@@ -117,7 +117,7 @@ const DRV_SDCARD_INIT drvSDCardInit =
     .spiId = SPI_ID_1,
     .spiIndex = 0,
     .sdcardSpeedHz = 20000000,
-    .spiClk = CLK_BUS_PERIPHERAL_2,
+    .spiClk = CLK_BUS_PERIPHERAL_1,
     .chipSelectPort = PORT_CHANNEL_B,
     .chipSelectBitPosition = PORTS_BIT_POS_8,
 };

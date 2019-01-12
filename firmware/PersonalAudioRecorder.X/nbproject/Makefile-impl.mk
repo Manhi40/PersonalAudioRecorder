@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=PersonalAudioRecorderS
+PROJECTNAME=PersonalAudioRecorder.X
 
 # Active Configuration
 DEFAULTCONF=default
