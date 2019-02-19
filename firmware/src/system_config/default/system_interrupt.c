@@ -62,22 +62,14 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include "system/common/sys_common.h"
 #include "app.h"
 #include "system_definitions.h"
+#include "app_sdcard_write.h"
 
-#include "app_sdcard_write.c"
 extern APP_DATA appData;
 // *****************************************************************************
 // *****************************************************************************
 // Section: System Interrupt Vector Functions
 // *****************************************************************************
 // *****************************************************************************
-
-
-void __ISR(_DMA0_VECTOR, ipl1AUTO) _IntHandlerSysDmaCh0(void)
-{       
-    //appData.state = APP_STATE_SERVICE_TASKS;
-    //AD1CON1bits.DONE = 0;
-    SYS_DMA_Tasks(sysObj.sysDma, DMA_CHANNEL_0);
-}
 
 void __ISR(_ADC_VECTOR, ipl3AUTO) _IntHandlerDrvAdc(void)
 {
@@ -86,7 +78,7 @@ void __ISR(_ADC_VECTOR, ipl3AUTO) _IntHandlerDrvAdc(void)
         AD1CON1bits.DONE = 0;
         int i;
         for(i=0;i<16;i++){
-            appData.samples[appData.samplePlace] = (DRV_ADC_SamplesRead(i)-512) >> 2;
+            appData.samples[appData.samplePlace] = (DRV_ADC_SamplesRead(i));//-512) >> 2;
             appData.samplePlace++;
         }
 

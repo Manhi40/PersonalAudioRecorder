@@ -118,7 +118,6 @@ typedef struct
     APP_STATES state;
     int16_t samples[bufferSize];
     uint16_t samplePlace;
-    SYS_DMA_CHANNEL_HANDLE channelHandle;
     /* TODO: Define any additional data used by the application. */
 
 } APP_DATA;

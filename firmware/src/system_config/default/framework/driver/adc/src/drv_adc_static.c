@@ -55,7 +55,7 @@ void DRV_ADC_Initialize(void)
     /* Select Clock Source */
     PLIB_ADC_ConversionClockSourceSelect(DRV_ADC_ID_1, ADC_CLOCK_SOURCE_PERIPHERAL_BUS_CLOCK);
     /* Select Clock Prescaler */
-    PLIB_ADC_ConversionClockSet(DRV_ADC_ID_1, SYS_CLK_BUS_PERIPHERAL_1, 40);
+    PLIB_ADC_ConversionClockSet(DRV_ADC_ID_1, SYS_CLK_BUS_PERIPHERAL_1, 405);
 
     /* Select Power Mode */
     PLIB_ADC_StopInIdleDisable(DRV_ADC_ID_1);
@@ -67,7 +67,7 @@ void DRV_ADC_Initialize(void)
     /* Enable Auto Sample Mode */
     PLIB_ADC_SampleAutoStartEnable(DRV_ADC_ID_1);
     /* Sample Acquisition Time (Auto Sample Mode) */	
-    PLIB_ADC_SampleAcquisitionTimeSet(DRV_ADC_ID_1, 31);
+    PLIB_ADC_SampleAcquisitionTimeSet(DRV_ADC_ID_1, 1);
     /* Select Sampling Mode */
     PLIB_ADC_SamplingModeSelect(DRV_ADC_ID_1, ADC_SAMPLING_MODE_MUXA);
     /* Number of Samples Per Interrupt */
@@ -94,7 +94,7 @@ void DRV_ADC_Initialize(void)
     PLIB_INT_SourceFlagClear(INT_ID_0, INT_SOURCE_ADC_1);
     PLIB_INT_SourceEnable(INT_ID_0, INT_SOURCE_ADC_1);
     PLIB_INT_VectorPrioritySet(INT_ID_0, INT_VECTOR_AD1, INT_PRIORITY_LEVEL3);
-    PLIB_INT_VectorSubPrioritySet(INT_ID_0, INT_VECTOR_AD1, INT_SUBPRIORITY_LEVEL0);	
+    PLIB_INT_VectorSubPrioritySet(INT_ID_0, INT_VECTOR_AD1, INT_SUBPRIORITY_LEVEL3);	
 }
 
 inline void DRV_ADC_DeInitialize(void)

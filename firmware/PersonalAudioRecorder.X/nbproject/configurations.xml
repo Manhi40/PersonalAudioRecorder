@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="62">
+<configurationDescriptor version="65">
   <logicalFolder name="root" displayName="root" projectFiles="true">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -89,11 +89,7 @@
             <itemPath>../../../../framework/system/debug/sys_debug.h</itemPath>
           </logicalFolder>
           <logicalFolder name="f2" displayName="dma" projectFiles="true">
-            <logicalFolder name="f1" displayName="src" projectFiles="true">
-              <itemPath>../../../../framework/system/dma/src/sys_dma_local.h</itemPath>
-            </logicalFolder>
             <itemPath>../../../../framework/system/dma/sys_dma.h</itemPath>
-            <itemPath>../../../../framework/system/dma/sys_dma_definitions.h</itemPath>
           </logicalFolder>
           <logicalFolder name="f7" displayName="fs" projectFiles="true">
             <logicalFolder name="f2" displayName="fat_fs" projectFiles="true">
@@ -191,9 +187,9 @@
             <itemPath>../src/system_config/default/system_tasks.c</itemPath>
           </logicalFolder>
         </logicalFolder>
-        <itemPath>../src/app_sdcard_write.c</itemPath>
         <itemPath>../src/app.c</itemPath>
         <itemPath>../src/main.c</itemPath>
+        <itemPath>../src/app_sdcard_write.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="framework" projectFiles="true">
         <logicalFolder name="f1" displayName="driver" projectFiles="true">
@@ -221,10 +217,7 @@
           </logicalFolder>
         </logicalFolder>
         <logicalFolder name="f2" displayName="system" projectFiles="true">
-          <logicalFolder name="f1" displayName="dma" projectFiles="true">
-            <itemPath>../../../../framework/system/dma/src/sys_dma.c</itemPath>
-          </logicalFolder>
-          <logicalFolder name="f2" displayName="fs" projectFiles="true">
+          <logicalFolder name="f1" displayName="fs" projectFiles="true">
             <logicalFolder name="f1" displayName="src" projectFiles="true">
               <logicalFolder name="f1" displayName="dynamic" projectFiles="true">
                 <itemPath>../../../../framework/system/fs/src/dynamic/sys_fs.c</itemPath>
@@ -234,12 +227,12 @@
             <itemPath>../../../../framework/system/fs/fat_fs/src/file_system/ff.c</itemPath>
             <itemPath>../../../../framework/system/fs/fat_fs/src/hardware_access/diskio.c</itemPath>
           </logicalFolder>
-          <logicalFolder name="f3" displayName="int" projectFiles="true">
+          <logicalFolder name="f2" displayName="int" projectFiles="true">
             <logicalFolder name="f1" displayName="src" projectFiles="true">
               <itemPath>../../../../framework/system/int/src/sys_int_pic32.c</itemPath>
             </logicalFolder>
           </logicalFolder>
-          <logicalFolder name="f4" displayName="tmr" projectFiles="true">
+          <logicalFolder name="f3" displayName="tmr" projectFiles="true">
             <logicalFolder name="f1" displayName="src" projectFiles="true">
               <itemPath>../../../../framework/system/tmr/src/sys_tmr.c</itemPath>
             </logicalFolder>
@@ -270,9 +263,12 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>PICkit3PlatformTool</platformTool>
         <languageToolchain>XC32</languageToolchain>
-        <languageToolchainVersion>2.10</languageToolchainVersion>
+        <languageToolchainVersion>2.15</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
+      <packs>
+        <pack name="PIC32MX_DFP" vendor="Microchip" version="1.0.25"/>
+      </packs>
       <compileType>
         <linkerTool>
           <linkerLibItems>
@@ -350,6 +346,7 @@
       </C32-AS>
       <C32-LD>
         <property key="additional-options-use-response-files" value="false"/>
+        <property key="additional-options-write-sla" value="false"/>
         <property key="allocate-dinit" value="false"/>
         <property key="code-dinit" value="false"/>
         <property key="ebase-addr" value=""/>
@@ -373,6 +370,7 @@
         <property key="kseg-origin" value=""/>
         <property key="linker-symbols" value=""/>
         <property key="map-file" value="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map"/>
+        <property key="no-device-startup-code" value="false"/>
         <property key="no-startup-files" value="false"/>
         <property key="oXC32ld-extra-opts" value=""/>
         <property key="optimization-level" value=""/>
@@ -465,6 +463,7 @@
         <property key="UART1" value="true"/>
         <property key="UART2" value="true"/>
         <property key="USB" value="true"/>
+        <property key="debugoptions.useswbreakpoints" value="false"/>
         <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>

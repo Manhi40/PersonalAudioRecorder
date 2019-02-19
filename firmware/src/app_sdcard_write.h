@@ -15,6 +15,11 @@
 #include <string.h>
 #include "system_config.h"
 #include "system_definitions.h"
+#include "system/fs/src/sys_fs_local.h"
+#include "driver/sdcard/src/drv_sdcard_local.h"
+#include "system/common/sys_buffer.h"
+
+
 
 #ifdef	__cplusplus
 extern "C" {
@@ -46,17 +51,19 @@ typedef struct{
     APP_SDCARD_WRITE_DATA_PARSER dataParser;
 }APP_SDCARD_WRITE_DATA;
 
+void APP_SDCARD_WRITE_Initialize();
 
-void APP_SDCARD_WRITE_Tasks(void);
-
-void APP_SDCARD_WRITE_Initialize(void);
-
-static bool APP_SDCARD_WIRTE_Write_SDCard(
+static bool APP_SDCARD_WRITE_Write_SDCard(
     const DRV_HANDLE handle,
     int16_t* const pBuffer,
     const uint16_t bytesToWrite,
     uint16_t*const pNumBytesWrote
 );
+
+void APP_SDCARD_WRITE_Tasks();
+
+
+
 
 
 

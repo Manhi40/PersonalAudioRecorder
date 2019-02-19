@@ -81,14 +81,14 @@ extern "C" {
 // *****************************************************************************
 /* Clock System Service Configuration Options
 */
-#define SYS_CLK_FREQ                        8000000ul
-#define SYS_CLK_BUS_PERIPHERAL_1            8000000ul
+#define SYS_CLK_FREQ                        72000000ul
+#define SYS_CLK_BUS_PERIPHERAL_1            72000000ul
 #define SYS_CLK_UPLL_BEFORE_DIV2_FREQ       144000000ul
 #define SYS_CLK_CONFIG_PRIMARY_XTAL         12000000ul
 #define SYS_CLK_CONFIG_SECONDARY_XTAL       32768ul
    
 /*** Ports System Service Configuration ***/
-#define SYS_PORT_A_ANSEL        0xFFEF
+#define SYS_PORT_A_ANSEL        0xFFFB
 #define SYS_PORT_A_TRIS         0xFFFF
 #define SYS_PORT_A_LAT          0x0000
 #define SYS_PORT_A_ODC          0x0000
@@ -96,8 +96,8 @@ extern "C" {
 #define SYS_PORT_A_CNPD         0x0000
 #define SYS_PORT_A_CNEN         0x0000
 
-#define SYS_PORT_B_ANSEL        0xBC53
-#define SYS_PORT_B_TRIS         0xFFF3
+#define SYS_PORT_B_ANSEL        0xBC5F
+#define SYS_PORT_B_TRIS         0xFFFF
 #define SYS_PORT_B_LAT          0x0000
 #define SYS_PORT_B_ODC          0x0000
 #define SYS_PORT_B_CNPU         0x0000
@@ -115,7 +115,7 @@ extern "C" {
 #define SYS_FS_MAX_FILES	    	1
 #define SYS_FS_MAX_FILE_SYSTEM_TYPE 	1
 #define SYS_FS_MEDIA_MAX_BLOCK_SIZE  	512
-#define SYS_FS_MEDIA_MANAGER_BUFFER_SIZE 2048
+#define SYS_FS_MEDIA_MANAGER_BUFFER_SIZE 4096
 #define SYS_FS_FILE_NAME_LEN 255
 #define SYS_FS_CWD_STRING_LEN 1024
 
@@ -193,8 +193,8 @@ extern "C" {
 #define DRV_SPI_SPI_CLOCK_IDX0 				CLK_BUS_PERIPHERAL_1
 #define DRV_SPI_BAUD_RATE_IDX0 				20000000
 #define DRV_SPI_BUFFER_TYPE_IDX0 			DRV_SPI_BUFFER_TYPE_ENHANCED
-#define DRV_SPI_CLOCK_MODE_IDX0 			DRV_SPI_CLOCK_MODE_IDLE_LOW_EDGE_RISE
-#define DRV_SPI_INPUT_PHASE_IDX0 			SPI_INPUT_SAMPLING_PHASE_IN_MIDDLE
+#define DRV_SPI_CLOCK_MODE_IDX0 			DRV_SPI_CLOCK_MODE_IDLE_LOW_EDGE_FALL
+#define DRV_SPI_INPUT_PHASE_IDX0 			SPI_INPUT_SAMPLING_PHASE_AT_END
 #define DRV_SPI_TRANSMIT_DUMMY_BYTE_VALUE_IDX0      0xFF
 
 #define DRV_SPI_TX_INT_SOURCE_IDX0 			INT_SOURCE_SPI_1_TRANSMIT

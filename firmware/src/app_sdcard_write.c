@@ -6,9 +6,6 @@
  */
 
 #include "app_sdcard_write.h"
-#include "system/fs/src/sys_fs_local.h"
-#include "driver/sdcard/src/drv_sdcard_local.h"
-#include "system/common/sys_buffer.h"
 
 extern APP_DATA appData;
 APP_SDCARD_WRITE_DATA appSDcardWriteData;
@@ -17,10 +14,12 @@ void APP_SDCARD_WRITE_Initialize(void){
     appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_MOUNT;
     appSDcardWriteData.currentFilePosition = 0;
     appSDcardWriteData.dataParser.nElements = 0;
+    TRISBbits.TRISB2 = 0;
+    TRISBbits.TRISB3 = 0;
     //strcpy(appSDcardWriteData.dataParser.buffer, "this is a test");
 }
 
-static bool APP_SDCARD_WIRTE_Write_SDCard(
+static bool APP_SDCARD_WRITE_Write_SDCard(
     const DRV_HANDLE handle,
     int16_t* const pBuffer,
     const uint16_t bytesToWrite,
@@ -103,7 +102,7 @@ void APP_SDCARD_WRITE_Tasks(void){
                 //strcpy(appSDcardWriteData.dataParser.buffer, appData.samples);
                 //strcpy(appSDcardWriteData.dataParser.buffer, appData.samples);
                 SYS_FS_FileSeek(appSDcardWriteData.fileHandle, appSDcardWriteData.currentFilePosition, SYS_FS_SEEK_SET);
-                if(APP_SDCARD_WIRTE_Write_SDCard(
+                if(APP_SDCARD_WRITE_Write_SDCard(
                         appSDcardWriteData.fileHandle,
                         &appData.samples[0],
                         nBytesToWrite, &nBytesWrote)){
@@ -111,7 +110,11 @@ void APP_SDCARD_WRITE_Tasks(void){
                     
                 }
                 //appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_WRITE;
+                LATBbits.LATB2 = 1;
+                LATBbits.LATB3 = 0;
                 SYS_FS_FileSync(appSDcardWriteData.fileHandle);
+                LATBbits.LATB2 = 0;
+                LATBbits.LATB3 = 1;
                 //appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_CURRENT_DRIVE_SET;
 
                 appData.state = APP_STATE_ADC_WAIT;
