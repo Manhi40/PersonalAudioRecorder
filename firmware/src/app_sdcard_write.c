@@ -21,7 +21,7 @@ void APP_SDCARD_WRITE_Initialize(void){
 
 static bool APP_SDCARD_WRITE_Write_SDCard(
     const DRV_HANDLE handle,
-    int16_t* const pBuffer,
+    uint16_t* const pBuffer,
     const uint16_t bytesToWrite,
     uint16_t*const pNumBytesWrote
 )
@@ -90,12 +90,12 @@ void APP_SDCARD_WRITE_Tasks(void){
             uint16_t nBytesToWrite = 0;
             
             //if statement checks if we still have data to write
-            if(sizeof(appData.samples) > 0){
+            if(sizeof(*appData.sdBuffer) > 0){
                 
                 //Calculates the remaining number of bytes to write
                 //nBytesToWrite = sizeof(appSDcardWriteData.dataParser.buffer) - 
                       //  appSDcardWriteData.dataParser.nElements;
-                nBytesToWrite = bufferSize;
+                nBytesToWrite = bufferSize*2;
 
                 //writes data and checks if successful, if not, data writing is done
                 
@@ -104,17 +104,17 @@ void APP_SDCARD_WRITE_Tasks(void){
                 SYS_FS_FileSeek(appSDcardWriteData.fileHandle, appSDcardWriteData.currentFilePosition, SYS_FS_SEEK_SET);
                 if(APP_SDCARD_WRITE_Write_SDCard(
                         appSDcardWriteData.fileHandle,
-                        &appData.samples[0],
+                        appData.sdBuffer,
                         nBytesToWrite, &nBytesWrote)){
                     appSDcardWriteData.currentFilePosition += nBytesWrote;
                     
                 }
                 //appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_WRITE;
-                LATBbits.LATB2 = 1;
-                LATBbits.LATB3 = 0;
+                //LATBbits.LATB2 = 1;
+                //LATBbits.LATB3 = 0;
                 SYS_FS_FileSync(appSDcardWriteData.fileHandle);
-                LATBbits.LATB2 = 0;
-                LATBbits.LATB3 = 1;
+                //LATBbits.LATB2 = 0;
+                //LATBbits.LATB3 = 1;
                 //appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_CURRENT_DRIVE_SET;
 
                 appData.state = APP_STATE_ADC_WAIT;

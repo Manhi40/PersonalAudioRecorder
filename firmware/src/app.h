@@ -66,7 +66,7 @@ extern "C" {
 
 #endif
     
-#define bufferSize 8192
+#define bufferSize 2048
 // DOM-IGNORE-END 
 
 // *****************************************************************************
@@ -116,8 +116,12 @@ typedef struct
 {
     /* The application's current state */
     APP_STATES state;
-    int16_t samples[bufferSize];
-    uint16_t samplePlace;
+    //uint32_t samples[bufferSize];
+    uint16_t pingBuf[bufferSize];
+    uint16_t pongBuf[bufferSize];
+    uint16_t *dmaBuffer;
+    uint16_t *sdBuffer;
+    SYS_DMA_CHANNEL_HANDLE channelHandle;
     /* TODO: Define any additional data used by the application. */
 
 } APP_DATA;

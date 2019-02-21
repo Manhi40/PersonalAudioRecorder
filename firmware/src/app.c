@@ -117,9 +117,24 @@ void APP_Initialize ( void )
 {
     /* Place the App state machine in its initial state. */
     appData.state = APP_STATE_INIT;
-   
+    appData.dmaBuffer = &appData.pingBuf;
+    appData.sdBuffer = &appData.pongBuf;
+    
+
+    appData.channelHandle = SYS_DMA_ChannelAllocate(DMA_CHANNEL_0);
+    SYS_DMA_ChannelSetup(appData.channelHandle, SYS_DMA_CHANNEL_OP_MODE_AUTO , DMA_TRIGGER_ADC_1);
+    SYS_DMA_ChannelTransferAdd(appData.channelHandle, (const void*)&ADC1BUF0, 2, appData.dmaBuffer,bufferSize*2,2);
+    
+    PLIB_DMA_ChannelXINTSourceFlagClear(DMA_ID_0, DMA_CHANNEL_0, DMA_INT_DESTINATION_DONE);
+    PLIB_DMA_ChannelXINTSourceEnable(DMA_ID_0, DMA_CHANNEL_0, DMA_INT_DESTINATION_DONE);
+    SYS_DMA_ChannelEnable(appData.channelHandle);
+        
+    DRV_ADC_Open();
+    DRV_ADC_Start();
+    
     APP_SDCARD_WRITE_Initialize();
-    DRV_ADC_Initialize();
+    
+    //DRV_ADC_Initialize();
 }
 
 
@@ -160,7 +175,7 @@ void APP_Tasks ( void )
         
         case APP_STATE_ADC_WAIT:
         {
-            
+            asm("nop");
             break;
         }
 

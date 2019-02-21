@@ -55,7 +55,7 @@ void DRV_ADC_Initialize(void)
     /* Select Clock Source */
     PLIB_ADC_ConversionClockSourceSelect(DRV_ADC_ID_1, ADC_CLOCK_SOURCE_PERIPHERAL_BUS_CLOCK);
     /* Select Clock Prescaler */
-    PLIB_ADC_ConversionClockSet(DRV_ADC_ID_1, SYS_CLK_BUS_PERIPHERAL_1, 405);
+    PLIB_ADC_ConversionClockSet(DRV_ADC_ID_1, SYS_CLK_BUS_PERIPHERAL_1, 6061);
 
     /* Select Power Mode */
     PLIB_ADC_StopInIdleDisable(DRV_ADC_ID_1);
@@ -67,11 +67,11 @@ void DRV_ADC_Initialize(void)
     /* Enable Auto Sample Mode */
     PLIB_ADC_SampleAutoStartEnable(DRV_ADC_ID_1);
     /* Sample Acquisition Time (Auto Sample Mode) */	
-    PLIB_ADC_SampleAcquisitionTimeSet(DRV_ADC_ID_1, 1);
+    PLIB_ADC_SampleAcquisitionTimeSet(DRV_ADC_ID_1, 6);
     /* Select Sampling Mode */
     PLIB_ADC_SamplingModeSelect(DRV_ADC_ID_1, ADC_SAMPLING_MODE_MUXA);
     /* Number of Samples Per Interrupt */
-    PLIB_ADC_SamplesPerInterruptSelect(DRV_ADC_ID_1, ADC_16SAMPLES_PER_INTERRUPT);
+    PLIB_ADC_SamplesPerInterruptSelect(DRV_ADC_ID_1, ADC_1SAMPLE_PER_INTERRUPT);
 
     /* Conversion Selections */
     /* Select Trigger Source */
@@ -90,11 +90,6 @@ void DRV_ADC_Initialize(void)
     /* MUX A Positive Input Select */
     PLIB_ADC_MuxChannel0InputPositiveSelect(DRV_ADC_ID_1, ADC_MUX_A, ADC_INPUT_POSITIVE_AN11);
  
-    /* Initialize ADC Interrupt */
-    PLIB_INT_SourceFlagClear(INT_ID_0, INT_SOURCE_ADC_1);
-    PLIB_INT_SourceEnable(INT_ID_0, INT_SOURCE_ADC_1);
-    PLIB_INT_VectorPrioritySet(INT_ID_0, INT_VECTOR_AD1, INT_PRIORITY_LEVEL3);
-    PLIB_INT_VectorSubPrioritySet(INT_ID_0, INT_VECTOR_AD1, INT_SUBPRIORITY_LEVEL3);	
 }
 
 inline void DRV_ADC_DeInitialize(void)

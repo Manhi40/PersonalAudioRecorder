@@ -55,7 +55,7 @@ void APP_SDCARD_WRITE_Initialize();
 
 static bool APP_SDCARD_WRITE_Write_SDCard(
     const DRV_HANDLE handle,
-    int16_t* const pBuffer,
+    uint16_t* const pBuffer,
     const uint16_t bytesToWrite,
     uint16_t*const pNumBytesWrote
 );

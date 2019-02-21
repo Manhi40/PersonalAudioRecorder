@@ -71,27 +71,27 @@ extern APP_DATA appData;
 // *****************************************************************************
 // *****************************************************************************
 
-void __ISR(_ADC_VECTOR, ipl3AUTO) _IntHandlerDrvAdc(void)
-{
-    
-    if(DRV_ADC_SamplesAvailable()){
-        AD1CON1bits.DONE = 0;
-        int i;
-        for(i=0;i<16;i++){
-            appData.samples[appData.samplePlace] = (DRV_ADC_SamplesRead(i));//-512) >> 2;
-            appData.samplePlace++;
-        }
 
-        if(appData.samplePlace >= bufferSize){
-            appData.state = APP_STATE_SERVICE_TASKS;
-            appData.samplePlace = 0;
-            AD1CON1bits.DONE = 0;
-        }
+void __ISR(_DMA0_VECTOR, ipl1AUTO) _IntHandlerSysDmaCh0(void){
+    PLIB_INT_SourceFlagClear(INT_ID_0, INT_SOURCE_DMA_0);
+    appData.state = APP_STATE_SERVICE_TASKS;
+    if(appData.dmaBuffer == &appData.pingBuf){
+        appData.dmaBuffer = &appData.pongBuf;
+        appData.sdBuffer = &appData.pingBuf;
+        SYS_DMA_ChannelTransferAdd(appData.channelHandle,(const void*)&ADC1BUF0,2,appData.dmaBuffer,bufferSize*2,2);
+
     }
-   /* Clear ADC Interrupt Flag */
-   PLIB_INT_SourceFlagClear(INT_ID_0, INT_SOURCE_ADC_1);
+    else if(appData.dmaBuffer == &appData.pongBuf){
+        appData.dmaBuffer = &appData.pingBuf;
+        appData.sdBuffer = &appData.pongBuf;
+        SYS_DMA_ChannelTransferAdd(appData.channelHandle,(const void*)&ADC1BUF0,2,appData.dmaBuffer,bufferSize*2,2);
+
+    }
+    PLIB_DMA_ChannelXINTSourceFlagClear(DMA_ID_0, DMA_CHANNEL_0, DMA_INT_DESTINATION_DONE);
+    //SYS_DMA_ChannelEnable(appData.channelHandle);
+    //SYS_DMA_Tasks(sysObj.sysDma, DMA_CHANNEL_0);
 }
- 
+
 
 void __ISR(_TIMER_1_VECTOR, ipl1AUTO) IntHandlerDrvTmrInstance0(void)
 {
