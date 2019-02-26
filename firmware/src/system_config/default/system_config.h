@@ -241,6 +241,11 @@ extern "C" {
 /*** Application Defined Pins ***/
 
 
+/*** Audio Encoders Configuration ***/
+#define PCM_ENCODER
+#define WAV_CONTAINER
+
+
 /*** Application Instance 0 Configuration ***/
 
 //DOM-IGNORE-BEGIN

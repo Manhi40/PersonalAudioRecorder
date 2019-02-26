@@ -66,7 +66,7 @@ extern "C" {
 
 #endif
     
-#define bufferSize 2048
+#define bufferSize 8192
 // DOM-IGNORE-END 
 
 // *****************************************************************************

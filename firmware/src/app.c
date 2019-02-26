@@ -47,63 +47,47 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // DOM-IGNORE-END
 
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Included Files 
-// *****************************************************************************
-// *****************************************************************************
 
 #include "app.h"
 #include "app_sdcard_write.h"
+#include "wav_format_container.h"
+#include "encoder.h"
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Global Data Definitions
-// *****************************************************************************
-// *****************************************************************************
 
-// *****************************************************************************
-/* Application Data
 
-  Summary:
-    Holds application data
+#define AUDIO_FILE_METADATA_HEADER_SIZE 1024 //1Kb contains header+comments
+#define NUM_PACKETS_TO_ONE_PAGE  10
+#define AUDIO_ENCODE_SAMPLE_RATE 16000
 
-  Description:
-    This structure holds the application's data.
 
-  Remarks:
-    This structure should be initialized by the APP_Initialize function.
-    
-    Application strings and buffers are be defined outside this structure.
-*/
+
+typedef struct {
+    uint8_t *buffer;
+    uint32_t len;
+} BUFFER;
+
+
+
 
 APP_DATA appData;
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Application Callback Functions
-// *****************************************************************************
-// *****************************************************************************
+const HAR_ENCODER *runtimeEncoderInst;
 
-/* TODO:  Add any necessary callback functions.
-*/
+static uint8_t pheader[AUDIO_FILE_METADATA_HEADER_SIZE];
+static uint32_t _audio_frame_count = 0;
+static StreamInfo si;
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Application Local Functions
-// *****************************************************************************
-// *****************************************************************************
+static uint32_t encoded_data_size;
 
+static int32_t _construct_audio_file_header(EncoderType et,
+        StreamInfo *si,
+        uint32_t encodedAudioSize,
+        void *pheader,
+        uint32_t insize);
 
-/* TODO:  Add any necessary local functions.
-*/
+static void APP_CODECBufferReadEventHandler(DRV_CODEC_BUFFER_EVENT event,
+        DRV_CODEC_BUFFER_HANDLE handle, uintptr_t context);
 
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: Application Initialization and State Machine Functions
-// *****************************************************************************
-// *****************************************************************************
 
 /*******************************************************************************
   Function:
@@ -113,13 +97,13 @@ APP_DATA appData;
     See prototype in app.h.
  */
 
-void APP_Initialize ( void )
-{
+void APP_Initialize ( void ){
     /* Place the App state machine in its initial state. */
     appData.state = APP_STATE_INIT;
     appData.dmaBuffer = &appData.pingBuf;
     appData.sdBuffer = &appData.pongBuf;
     
+    encoded_data_size =0;
 
     appData.channelHandle = SYS_DMA_ChannelAllocate(DMA_CHANNEL_0);
     SYS_DMA_ChannelSetup(appData.channelHandle, SYS_DMA_CHANNEL_OP_MODE_AUTO , DMA_TRIGGER_ADC_1);
