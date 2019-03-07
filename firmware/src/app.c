@@ -55,7 +55,6 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 
 
-#define AUDIO_FILE_METADATA_HEADER_SIZE 1024 //1Kb contains header+comments
 #define NUM_PACKETS_TO_ONE_PAGE  10
 #define AUDIO_ENCODE_SAMPLE_RATE 16000
 
@@ -73,15 +72,12 @@ APP_DATA appData;
 
 const HAR_ENCODER *runtimeEncoderInst;
 
-static uint8_t pheader[AUDIO_FILE_METADATA_HEADER_SIZE];
 static uint32_t _audio_frame_count = 0;
 static StreamInfo si;
 
 static uint32_t encoded_data_size;
 
 
-static void APP_CODECBufferReadEventHandler(DRV_CODEC_BUFFER_EVENT event,
-        DRV_CODEC_BUFFER_HANDLE handle, uintptr_t context);
 
 
 /*******************************************************************************
@@ -128,7 +124,6 @@ void APP_Initialize ( void ){
 void APP_Tasks ( void )
 {
 
-    SYS_STATUS codecStatus;
     uint32_t size;
     uint32_t outsize = 0;
     /* Check the application's current state. */
@@ -144,8 +139,7 @@ void APP_Tasks ( void )
         
             if (appInitialized)
             {
-            
-                appData.state = APP_STATE_ADC_WAIT;
+                appData.state = APP_STATE_INIT_ENCODER;
             }
             break;
         }
@@ -164,8 +158,8 @@ void APP_Tasks ( void )
         case APP_STATE_INIT_ENCODER:
         {
                     si.sample_rate = AUDIO_ENCODE_SAMPLE_RATE;
-                    si.channel = 2; // stereo
-                    si.bit_depth = 16;
+                    si.channel = 1; // stereo
+                    si.bit_depth = 10;// I don't know if 10 bit is supported, check later
                     si.bps = si.sample_rate * si.channel * si.bit_depth;
                     if (runtimeEncoderInst->enc_init(si.channel, si.sample_rate)) {
                         appData.state = APP_STATE_CONSTRUCT_WAV_HEADER;
@@ -183,8 +177,8 @@ void APP_Tasks ( void )
         
         case APP_STATE_CONSTRUCT_WAV_HEADER:
         {
-            size = wav_riff_fill_header(pheader, PCM, &si, AUDIO_FILE_METADATA_HEADER_SIZE);
-            appSDcardWriteData.state = APP_STATE_PROCESS_DATA;
+            size = wav_riff_fill_header(appData.pheader, PCM, &si, AUDIO_FILE_METADATA_HEADER_SIZE);
+            appSDcardWriteData.state = APP_STATE_ADC_WAIT;
             break;
         }
 

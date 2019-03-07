@@ -17,6 +17,8 @@ void APP_SDCARD_WRITE_Initialize(void){
     TRISBbits.TRISB2 = 0;
     TRISBbits.TRISB3 = 0;
     TRISBbits.TRISB7 = 1;
+    strcpy(appSDcardWriteData.currentFileName, "file0");
+    appSDcardWriteData.fileCount = 0;
     //strcpy(appSDcardWriteData.dataParser.buffer, "this is a test");
 }
 
@@ -61,7 +63,7 @@ void APP_SDCARD_WRITE_Tasks(void){
             }
             //if properly mounted, open "test.txt"
             else{
-                appSDcardWriteData.fileHandle = SYS_FS_FileOpen("test.txt", (SYS_FS_FILE_OPEN_WRITE));
+                appSDcardWriteData.fileHandle = SYS_FS_FileOpen(appSDcardWriteData.currentFileName, (SYS_FS_FILE_OPEN_WRITE));
                 if(appSDcardWriteData.fileHandle == SYS_FS_HANDLE_INVALID){
                     appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_ERROR;
                 }
@@ -87,7 +89,16 @@ void APP_SDCARD_WRITE_Tasks(void){
          
         case APP_SDCARD_WRITE_HEADER:
         {
-            SYS_FS_FileSeek(appSDcardWriteData.fileHandle, 0, SYS_FS_SEEK_SET)
+            uint16_t nBytesWrote = 0;
+            SYS_FS_FileSeek(appSDcardWriteData.fileHandle, appSDcardWriteData.currentFilePosition, SYS_FS_SEEK_SET);
+            if(APP_SDCARD_WRITE_Write_SDCard(
+                    appSDcardWriteData.fileHandle, 
+                    appData.pheader,
+                    1024,
+                    &nBytesWrote)){
+                appSDcardWriteData.currentFilePosition += nBytesWrote;
+            }
+            
         }
         break;
         
@@ -128,11 +139,25 @@ void APP_SDCARD_WRITE_Tasks(void){
                     LATBbits.LATB3 = 0;
                 }
                 //appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_CURRENT_DRIVE_SET;
-
+                if(appSDcardWriteData.currentFilePosition > FILESIZE)
+                    appSDcardWriteData.state = APP_SDCARD_WRITE_INC_FILENAME;
                 appData.state = APP_STATE_ADC_WAIT;
             }
         }
             break;
+            
+        case APP_SDCARD_WRITE_INC_FILENAME:
+        {
+            char tempNum[20];
+            appSDcardWriteData.fileCount++;
+            itoa(appSDcardWriteData.fileCount,tempNum,10);
+            strcpy(appSDcardWriteData.currentFileName, "File");
+            strcat(appSDcardWriteData.currentFileName, tempNum);
+            SYS_FS_FileClose(appSDcardWriteData.fileHandle);
+            appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_CURRENT_DRIVE_SET;
+            
+        }
+        break;
         default:
         {}
         break;
