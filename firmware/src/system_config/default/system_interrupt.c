@@ -74,7 +74,7 @@ extern APP_DATA appData;
 
 void __ISR(_DMA0_VECTOR, ipl1AUTO) _IntHandlerSysDmaCh0(void){
     PLIB_INT_SourceFlagClear(INT_ID_0, INT_SOURCE_DMA_0);
-    appData.state = APP_STATE_SERVICE_TASKS;
+    appData.state = APP_STATE_PROCESS_DATA;
     if(appData.dmaBuffer == &appData.pingBuf){
         appData.dmaBuffer = &appData.pongBuf;
         appData.sdBuffer = &appData.pingBuf;

@@ -79,11 +79,6 @@ static StreamInfo si;
 
 static uint32_t encoded_data_size;
 
-static int32_t _construct_audio_file_header(EncoderType et,
-        StreamInfo *si,
-        uint32_t encodedAudioSize,
-        void *pheader,
-        uint32_t insize);
 
 static void APP_CODECBufferReadEventHandler(DRV_CODEC_BUFFER_EVENT event,
         DRV_CODEC_BUFFER_HANDLE handle, uintptr_t context);
@@ -133,6 +128,9 @@ void APP_Initialize ( void ){
 void APP_Tasks ( void )
 {
 
+    SYS_STATUS codecStatus;
+    uint32_t size;
+    uint32_t outsize = 0;
     /* Check the application's current state. */
     switch ( appData.state )
     {
@@ -162,6 +160,33 @@ void APP_Tasks ( void )
             asm("nop");
             break;
         }
+        
+        case APP_STATE_INIT_ENCODER:
+        {
+                    si.sample_rate = AUDIO_ENCODE_SAMPLE_RATE;
+                    si.channel = 2; // stereo
+                    si.bit_depth = 16;
+                    si.bps = si.sample_rate * si.channel * si.bit_depth;
+                    if (runtimeEncoderInst->enc_init(si.channel, si.sample_rate)) {
+                        appData.state = APP_STATE_CONSTRUCT_WAV_HEADER;
+                    }
+                    break;
+        }
+        
+        case APP_STATE_PROCESS_DATA:
+        {
+            outsize = 0;
+            runtimeEncoderInst->enc_one_frame(appData.sdBuffer,bufferSize,appData.writeBuf[0],&outsize);
+            appData.state = APP_STATE_SERVICE_TASKS;
+            break;
+        }
+        
+        case APP_STATE_CONSTRUCT_WAV_HEADER:
+        {
+            size = wav_riff_fill_header(pheader, PCM, &si, AUDIO_FILE_METADATA_HEADER_SIZE);
+            appSDcardWriteData.state = APP_STATE_PROCESS_DATA;
+            break;
+        }
 
         case APP_STATE_SERVICE_TASKS:
         {
@@ -182,7 +207,7 @@ void APP_Tasks ( void )
     }
 }
 
- 
+
 
 /*******************************************************************************
  End of File

@@ -84,6 +84,13 @@ void APP_SDCARD_WRITE_Tasks(void){
                 appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_WRITE;
             }
             break;
+         
+        case APP_SDCARD_WRITE_HEADER:
+        {
+            SYS_FS_FileSeek(appSDcardWriteData.fileHandle, 0, SYS_FS_SEEK_SET)
+        }
+        break;
+        
         
         case APP_SDCARD_WRITE_STATE_CARD_WRITE:
         {
@@ -101,7 +108,7 @@ void APP_SDCARD_WRITE_Tasks(void){
                 SYS_FS_FileSeek(appSDcardWriteData.fileHandle, appSDcardWriteData.currentFilePosition, SYS_FS_SEEK_SET);
                 if(APP_SDCARD_WRITE_Write_SDCard(
                         appSDcardWriteData.fileHandle,
-                        appData.sdBuffer,
+                        &appData.writeBuf[0],
                         nBytesToWrite, &nBytesWrote)){
                     appSDcardWriteData.currentFilePosition += nBytesWrote;
                     

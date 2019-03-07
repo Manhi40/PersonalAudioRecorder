@@ -92,7 +92,10 @@ typedef enum
 	APP_STATE_INIT=0,
 	APP_STATE_SERVICE_TASKS,
     APP_STATE_IDLE,
-    APP_STATE_ADC_WAIT
+    APP_STATE_ADC_WAIT,
+    APP_STATE_INIT_ENCODER,
+    APP_STATE_PROCESS_DATA,
+    APP_STATE_CONSTRUCT_WAV_HEADER
 
 	/* TODO: Define states used by the application state machine. */
 
@@ -119,6 +122,7 @@ typedef struct
     //uint32_t samples[bufferSize];
     uint16_t pingBuf[bufferSize];
     uint16_t pongBuf[bufferSize];
+    uint16_t writeBuf[bufferSize];
     uint16_t *dmaBuffer;
     uint16_t *sdBuffer;
     SYS_DMA_CHANNEL_HANDLE channelHandle;
