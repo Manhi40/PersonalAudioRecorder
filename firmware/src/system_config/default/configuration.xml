@@ -298,7 +298,6 @@
         <Name dnOrder="0">drv_adc_static.c</Name>
         <Path dnOrder="1">Source&amp;#160;Files/app/system_config/default/framework/driver/adc/src</Path>
         <Checksum dnOrder="2">2990DC6642C4C8BE6FC2BCEB7A30CA91</Checksum>
-        <ProjectFileChecksum dnOrder="3">C3E41DAF27649134C2506CA93994866C</ProjectFileChecksum>
       </Template>
       <Template dnOrder="9">
         <Name dnOrder="0">app.c</Name>
@@ -347,7 +346,7 @@
         <Name dnOrder="0">system_interrupt.c</Name>
         <Path dnOrder="1">Source&amp;#160;Files/app/system_config/default</Path>
         <Checksum dnOrder="2">9FD4B1E84137D461FC08E4B92D1A18B1</Checksum>
-        <ProjectFileChecksum dnOrder="3">FBB6691CAA5135D3EC4A776954F34560</ProjectFileChecksum>
+        <ProjectFileChecksum dnOrder="3">E94A5DB221802293D44613F838620BD1</ProjectFileChecksum>
       </Template>
       <Template dnOrder="19">
         <Name dnOrder="0">drv_spi_master_ebm_tasks.c</Name>
@@ -367,11 +366,11 @@
     </Templates>
     <CompilerItems dnOrder="2">
       <C32 dnOrder="0">
-        <Include dnOrder="0" value="C:\microchip\harmony\v2_06\apps\PersonalAudioRecorder\firmware\src"/>
-        <Include dnOrder="1" value="C:\microchip\harmony\v2_06\apps\PersonalAudioRecorder\firmware\src\system_config\default"/>
-        <Include dnOrder="2" value="C:\microchip\harmony\v2_06\apps\PersonalAudioRecorder\firmware\src\default"/>
-        <Include dnOrder="3" value="C:\microchip\harmony\v2_06\framework"/>
-        <Include dnOrder="4" value="C:\microchip\harmony\v2_06\apps\PersonalAudioRecorder\firmware\src\system_config\default\framework"/>
+        <Include dnOrder="0" value="E:\microchip\harmony\v2_06\apps\PersonalAudioRecorder\firmware\src"/>
+        <Include dnOrder="1" value="E:\microchip\harmony\v2_06\apps\PersonalAudioRecorder\firmware\src\system_config\default"/>
+        <Include dnOrder="2" value="E:\microchip\harmony\v2_06\apps\PersonalAudioRecorder\firmware\src\default"/>
+        <Include dnOrder="3" value="E:\microchip\harmony\v2_06\framework"/>
+        <Include dnOrder="4" value="E:\microchip\harmony\v2_06\apps\PersonalAudioRecorder\firmware\src\system_config\default\framework"/>
       </C32>
     </CompilerItems>
     <Libraries dnOrder="3">

@@ -1,0 +1,17 @@
+ PATH s FOUND 
+Scale factor = 1.000000
+ 0) 317.53,307.08
+ PATH  FOUND 
+Scale factor = 1.000000
+ 1) 0.00,0.00
+
+Object origin:
+158.767115 153.541020
+
+Eagle Command:
+set wire_bend 2;
+change layer ;
+set width 0.000500;
+poly (R 1.587671 -1.535410) (R 1.587671 -1.535410);
+poly (R -1.587671 1.535410) (R -1.587671 1.535410);
+

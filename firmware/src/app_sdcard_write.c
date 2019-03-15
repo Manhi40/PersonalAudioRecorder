@@ -110,10 +110,10 @@ void APP_SDCARD_WRITE_Tasks(void){
                     
                 }
                 //appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_WRITE;
-                //LATBbits.LATB2 = 1;
+                LATBbits.LATB2 = 1;
                 //LATBbits.LATB3 = 0;
                 SYS_FS_FileSync(appSDcardWriteData.fileHandle);
-                //LATBbits.LATB2 = 0;
+                LATBbits.LATB2 = 0;
                 //LATBbits.LATB3 = 1;
                 //appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_CURRENT_DRIVE_SET;
 
