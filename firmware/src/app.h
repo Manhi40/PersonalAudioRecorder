@@ -128,7 +128,7 @@ typedef struct
     uint16_t *dmaBuffer;
     uint16_t *sdBuffer;
     SYS_DMA_CHANNEL_HANDLE channelHandle;
-    static uint8_t pheader[AUDIO_FILE_METADATA_HEADER_SIZE];
+    uint8_t pheader[AUDIO_FILE_METADATA_HEADER_SIZE];
 
     /* TODO: Define any additional data used by the application. */
 

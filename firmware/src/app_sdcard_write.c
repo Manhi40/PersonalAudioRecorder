@@ -17,14 +17,14 @@ void APP_SDCARD_WRITE_Initialize(void){
     TRISBbits.TRISB2 = 0;
     TRISBbits.TRISB3 = 0;
     TRISBbits.TRISB7 = 1;
-    strcpy(appSDcardWriteData.currentFileName, "file0");
+    strcpy(appSDcardWriteData.currentFileName, "file0.wav");
     appSDcardWriteData.fileCount = 0;
     //strcpy(appSDcardWriteData.dataParser.buffer, "this is a test");
 }
 
 static bool APP_SDCARD_WRITE_Write_SDCard(
     const DRV_HANDLE handle,
-    uint16_t* const pBuffer,
+    uint8_t* const pBuffer,
     const uint16_t bytesToWrite,
     uint16_t*const pNumBytesWrote
 )
@@ -70,7 +70,13 @@ void APP_SDCARD_WRITE_Tasks(void){
                 
                 // if all is good, move onto reading the file size
                 else{
+                    if(appSDcardWriteData.headerWrite){
+                    appSDcardWriteData.state = APP_SDCARD_WRITE_HEADER;
+                    appSDcardWriteData.headerWrite = 0;
+                }
+                else{
                     appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_WRITE;
+                    }
                 }
             }
             break;
@@ -98,6 +104,7 @@ void APP_SDCARD_WRITE_Tasks(void){
                     &nBytesWrote)){
                 appSDcardWriteData.currentFilePosition += nBytesWrote;
             }
+            appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_WRITE;
             
         }
         break;
@@ -111,7 +118,7 @@ void APP_SDCARD_WRITE_Tasks(void){
             //if statement checks if we still have data to write
             if(sizeof(*appData.sdBuffer) > 0){
                 
-                nBytesToWrite = bufferSize*2;
+                nBytesToWrite = bufferSize;
 
                 
                 //writes data and checks if successful, if not, data writing is done
@@ -151,9 +158,11 @@ void APP_SDCARD_WRITE_Tasks(void){
             char tempNum[20];
             appSDcardWriteData.fileCount++;
             itoa(appSDcardWriteData.fileCount,tempNum,10);
-            strcpy(appSDcardWriteData.currentFileName, "File");
+            strcpy(appSDcardWriteData.currentFileName, "file");
             strcat(appSDcardWriteData.currentFileName, tempNum);
+            strcat(appSDcardWriteData.currentFileName, ".wav");
             SYS_FS_FileClose(appSDcardWriteData.fileHandle);
+            appData.state = APP_STATE_CONSTRUCT_WAV_HEADER;
             appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_CURRENT_DRIVE_SET;
             
         }

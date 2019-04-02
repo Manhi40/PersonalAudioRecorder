@@ -318,8 +318,7 @@
       <Template dnOrder="9">
         <Name dnOrder="0">drv_adc_static.c</Name>
         <Path dnOrder="1">Source&amp;#160;Files/app/system_config/default/framework/driver/adc/src</Path>
-        <Checksum dnOrder="2">12677B585CCC15577E53876FA6641D70</Checksum>
-        <ProjectFileChecksum dnOrder="3">C3E41DAF27649134C2506CA93994866C</ProjectFileChecksum>
+        <Checksum dnOrder="2">7D7FA5042ACC835CB77EECBE6CF077BC</Checksum>
       </Template>
       <Template dnOrder="10">
         <Name dnOrder="0">app.c</Name>

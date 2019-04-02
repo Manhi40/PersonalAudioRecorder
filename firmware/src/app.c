@@ -77,6 +77,8 @@ static StreamInfo si;
 
 static uint32_t encoded_data_size;
 
+extern APP_SDCARD_WRITE_DATA appSDcardWriteData;
+
 
 
 
@@ -157,9 +159,10 @@ void APP_Tasks ( void )
         
         case APP_STATE_INIT_ENCODER:
         {
+                    runtimeEncoderInst = &pcmEncoderInst;
                     si.sample_rate = AUDIO_ENCODE_SAMPLE_RATE;
-                    si.channel = 1; // stereo
-                    si.bit_depth = 10;// I don't know if 10 bit is supported, check later
+                    si.channel = 1; // mono
+                    si.bit_depth = 16;// I don't know if 10 bit is supported, check later
                     si.bps = si.sample_rate * si.channel * si.bit_depth;
                     if (runtimeEncoderInst->enc_init(si.channel, si.sample_rate)) {
                         appData.state = APP_STATE_CONSTRUCT_WAV_HEADER;
@@ -170,15 +173,16 @@ void APP_Tasks ( void )
         case APP_STATE_PROCESS_DATA:
         {
             outsize = 0;
-            runtimeEncoderInst->enc_one_frame(appData.sdBuffer,bufferSize,appData.writeBuf[0],&outsize);
+            runtimeEncoderInst->enc_one_frame(appData.sdBuffer,bufferSize,&appData.writeBuf[0],&outsize);
             appData.state = APP_STATE_SERVICE_TASKS;
             break;
         }
         
-        case APP_STATE_CONSTRUCT_WAV_HEADER:
+        case APP_STATE_CONSTRUCT_WAV_HEADER:    //might be able to reuse header, try this later
         {
-            size = wav_riff_fill_header(appData.pheader, PCM, &si, AUDIO_FILE_METADATA_HEADER_SIZE);
-            appSDcardWriteData.state = APP_STATE_ADC_WAIT;
+            size = wav_riff_fill_header(appData.pheader, PCM, &si, 33554432);
+            appSDcardWriteData.headerWrite = 1;
+            appData.state = APP_STATE_SERVICE_TASKS;
             break;
         }
 
