@@ -66,7 +66,9 @@ extern "C" {
 
 #endif
     
-#define bufferSize 2048
+#define bufferSize 8192
+#define AUDIO_FILE_METADATA_HEADER_SIZE 1024 //1Kb contains header+comments
+
 // DOM-IGNORE-END 
 
 // *****************************************************************************
@@ -92,7 +94,10 @@ typedef enum
 	APP_STATE_INIT=0,
 	APP_STATE_SERVICE_TASKS,
     APP_STATE_IDLE,
-    APP_STATE_ADC_WAIT
+    APP_STATE_ADC_WAIT,
+    APP_STATE_INIT_ENCODER,
+    APP_STATE_PROCESS_DATA,
+    APP_STATE_CONSTRUCT_WAV_HEADER
 
 	/* TODO: Define states used by the application state machine. */
 
@@ -119,9 +124,12 @@ typedef struct
     //uint32_t samples[bufferSize];
     uint16_t pingBuf[bufferSize];
     uint16_t pongBuf[bufferSize];
+    uint16_t writeBuf[bufferSize];
     uint16_t *dmaBuffer;
     uint16_t *sdBuffer;
     SYS_DMA_CHANNEL_HANDLE channelHandle;
+    uint8_t pheader[AUDIO_FILE_METADATA_HEADER_SIZE];
+
     /* TODO: Define any additional data used by the application. */
 
 } APP_DATA;

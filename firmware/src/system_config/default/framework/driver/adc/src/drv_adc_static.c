@@ -55,7 +55,7 @@ void DRV_ADC_Initialize(void)
     /* Select Clock Source */
     PLIB_ADC_ConversionClockSourceSelect(DRV_ADC_ID_1, ADC_CLOCK_SOURCE_PERIPHERAL_BUS_CLOCK);
     /* Select Clock Prescaler */
-    PLIB_ADC_ConversionClockSet(DRV_ADC_ID_1, SYS_CLK_BUS_PERIPHERAL_1, 6061);
+    PLIB_ADC_ConversionClockSet(DRV_ADC_ID_1, SYS_CLK_BUS_PERIPHERAL_1, 30650);
 
     /* Select Power Mode */
     PLIB_ADC_StopInIdleDisable(DRV_ADC_ID_1);
@@ -67,7 +67,7 @@ void DRV_ADC_Initialize(void)
     /* Enable Auto Sample Mode */
     PLIB_ADC_SampleAutoStartEnable(DRV_ADC_ID_1);
     /* Sample Acquisition Time (Auto Sample Mode) */	
-    PLIB_ADC_SampleAcquisitionTimeSet(DRV_ADC_ID_1, 6);
+    PLIB_ADC_SampleAcquisitionTimeSet(DRV_ADC_ID_1, 2);
     /* Select Sampling Mode */
     PLIB_ADC_SamplingModeSelect(DRV_ADC_ID_1, ADC_SAMPLING_MODE_MUXA);
     /* Number of Samples Per Interrupt */
@@ -77,7 +77,7 @@ void DRV_ADC_Initialize(void)
     /* Select Trigger Source */
     PLIB_ADC_ConversionTriggerSourceSelect(DRV_ADC_ID_1, ADC_CONVERSION_TRIGGER_INTERNAL_COUNT);
     /* Select Result Format */
-    PLIB_ADC_ResultFormatSelect(DRV_ADC_ID_1, ADC_RESULT_FORMAT_INTEGER_16BIT);
+    PLIB_ADC_ResultFormatSelect(DRV_ADC_ID_1, ADC_RESULT_FORMAT_SIGNED_INTEGER_16BIT);
     /* Buffer Mode */
     PLIB_ADC_ResultBufferModeSelect(DRV_ADC_ID_1, ADC_BUFFER_MODE_ONE_16WORD_BUFFER);
 

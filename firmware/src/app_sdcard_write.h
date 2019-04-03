@@ -27,14 +27,17 @@ extern "C" {
 
     
 #define MAX_SD_CARD_WRITE_BUFFER_SIZE 16
+#define FILESIZE 33554432 //limit filesize to 32MB
     
 typedef enum{
  
-APP_SDCARD_WRITE_STATE_CARD_MOUNT,
-APP_SDCARD_WRITE_STATE_CARD_CURRENT_DRIVE_SET,
-APP_SDCARD_WRITE_STATE_READ_FILE_SIZE,           
-APP_SDCARD_WRITE_STATE_ERROR,
-APP_SDCARD_WRITE_STATE_CARD_WRITE
+    APP_SDCARD_WRITE_STATE_CARD_MOUNT,
+    APP_SDCARD_WRITE_STATE_CARD_CURRENT_DRIVE_SET,
+    APP_SDCARD_WRITE_STATE_READ_FILE_SIZE,           
+    APP_SDCARD_WRITE_STATE_ERROR,
+    APP_SDCARD_WRITE_HEADER,
+    APP_SDCARD_WRITE_STATE_CARD_WRITE,
+    APP_SDCARD_WRITE_INC_FILENAME
 
 } APP_SDCARD_WRITE_STATES;
 
@@ -48,14 +51,17 @@ typedef struct{
     SYS_FS_HANDLE fileHandle;
     int32_t fileSize;
     int32_t currentFilePosition;
+    char currentFileName[255];
+    uint16_t fileCount;
     APP_SDCARD_WRITE_DATA_PARSER dataParser;
+    uint8_t headerWrite;
 }APP_SDCARD_WRITE_DATA;
 
 void APP_SDCARD_WRITE_Initialize();
 
 static bool APP_SDCARD_WRITE_Write_SDCard(
     const DRV_HANDLE handle,
-    uint16_t* const pBuffer,
+    uint8_t* const pBuffer,
     const uint16_t bytesToWrite,
     uint16_t*const pNumBytesWrote
 );

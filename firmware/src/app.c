@@ -47,63 +47,40 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // DOM-IGNORE-END
 
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Included Files 
-// *****************************************************************************
-// *****************************************************************************
 
 #include "app.h"
 #include "app_sdcard_write.h"
+#include "wav_format_container.h"
+#include "encoder.h"
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Global Data Definitions
-// *****************************************************************************
-// *****************************************************************************
 
-// *****************************************************************************
-/* Application Data
 
-  Summary:
-    Holds application data
+#define NUM_PACKETS_TO_ONE_PAGE  10
+#define AUDIO_ENCODE_SAMPLE_RATE 16000
 
-  Description:
-    This structure holds the application's data.
 
-  Remarks:
-    This structure should be initialized by the APP_Initialize function.
-    
-    Application strings and buffers are be defined outside this structure.
-*/
+
+typedef struct {
+    uint8_t *buffer;
+    uint32_t len;
+} BUFFER;
+
+
+
 
 APP_DATA appData;
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Application Callback Functions
-// *****************************************************************************
-// *****************************************************************************
+const HAR_ENCODER *runtimeEncoderInst;
 
-/* TODO:  Add any necessary callback functions.
-*/
+static uint32_t _audio_frame_count = 0;
+static StreamInfo si;
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Application Local Functions
-// *****************************************************************************
-// *****************************************************************************
+static uint32_t encoded_data_size;
+
+extern APP_SDCARD_WRITE_DATA appSDcardWriteData;
 
 
-/* TODO:  Add any necessary local functions.
-*/
 
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: Application Initialization and State Machine Functions
-// *****************************************************************************
-// *****************************************************************************
 
 /*******************************************************************************
   Function:
@@ -113,13 +90,13 @@ APP_DATA appData;
     See prototype in app.h.
  */
 
-void APP_Initialize ( void )
-{
+void APP_Initialize ( void ){
     /* Place the App state machine in its initial state. */
     appData.state = APP_STATE_INIT;
     appData.dmaBuffer = &appData.pingBuf;
     appData.sdBuffer = &appData.pongBuf;
     
+    encoded_data_size =0;
 
     appData.channelHandle = SYS_DMA_ChannelAllocate(DMA_CHANNEL_0);
     SYS_DMA_ChannelSetup(appData.channelHandle, SYS_DMA_CHANNEL_OP_MODE_AUTO , DMA_TRIGGER_ADC_1);
@@ -149,6 +126,8 @@ void APP_Initialize ( void )
 void APP_Tasks ( void )
 {
 
+    uint32_t size;
+    uint32_t outsize = 0;
     /* Check the application's current state. */
     switch ( appData.state )
     {
@@ -162,8 +141,7 @@ void APP_Tasks ( void )
         
             if (appInitialized)
             {
-            
-                appData.state = APP_STATE_ADC_WAIT;
+                appData.state = APP_STATE_INIT_ENCODER;
             }
             break;
         }
@@ -176,6 +154,35 @@ void APP_Tasks ( void )
         case APP_STATE_ADC_WAIT:
         {
             asm("nop");
+            break;
+        }
+        
+        case APP_STATE_INIT_ENCODER:
+        {
+                    runtimeEncoderInst = &pcmEncoderInst;
+                    si.sample_rate = AUDIO_ENCODE_SAMPLE_RATE;
+                    si.channel = 1; // mono
+                    si.bit_depth = 16;// I don't know if 10 bit is supported, check later
+                    si.bps = si.sample_rate * si.channel * si.bit_depth;
+                    if (runtimeEncoderInst->enc_init(si.channel, si.sample_rate)) {
+                        appData.state = APP_STATE_CONSTRUCT_WAV_HEADER;
+                    }
+                    break;
+        }
+        
+        case APP_STATE_PROCESS_DATA:
+        {
+            outsize = 0;
+            runtimeEncoderInst->enc_one_frame(appData.sdBuffer,bufferSize,&appData.writeBuf[0],&outsize);
+            appData.state = APP_STATE_SERVICE_TASKS;
+            break;
+        }
+        
+        case APP_STATE_CONSTRUCT_WAV_HEADER:    //might be able to reuse header, try this later
+        {
+            size = wav_riff_fill_header(appData.pheader, PCM, &si, 33554432);
+            appSDcardWriteData.headerWrite = 1;
+            appData.state = APP_STATE_SERVICE_TASKS;
             break;
         }
 
@@ -198,7 +205,7 @@ void APP_Tasks ( void )
     }
 }
 
- 
+
 
 /*******************************************************************************
  End of File
