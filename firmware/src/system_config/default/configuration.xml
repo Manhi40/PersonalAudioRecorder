@@ -279,12 +279,12 @@
       <Template dnOrder="1">
         <Name dnOrder="0">sys_ports_static.c</Name>
         <Path dnOrder="1">Source&amp;#160;Files/app/system_config/default/framework/system/ports/src</Path>
-        <Checksum dnOrder="2">1CF6BF69AABF444F6B86B1D931AF7F78</Checksum>
+        <Checksum dnOrder="2">CB9DB1907B447174AA6A598E04865D9F</Checksum>
       </Template>
       <Template dnOrder="2">
         <Name dnOrder="0">system_init.c</Name>
         <Path dnOrder="1">Source&amp;#160;Files/app/system_config/default</Path>
-        <Checksum dnOrder="2">7F9C9BF43EF6872DA8E880971D1C7D8D</Checksum>
+        <Checksum dnOrder="2">DEF9FA046654E99D32454116BE8D34A9</Checksum>
       </Template>
       <Template dnOrder="3">
         <Name dnOrder="0">main.c</Name>
@@ -308,7 +308,7 @@
       <Template dnOrder="7">
         <Name dnOrder="0">drv_adc_static.h</Name>
         <Path dnOrder="1">Header&amp;#160;Files/app/system_config/default/framework/driver/adc</Path>
-        <Checksum dnOrder="2">33D2EBC7F67F3F125C0F24AB5D478CB6</Checksum>
+        <Checksum dnOrder="2">FA4259EBA39ABFE9F29DAB425AC72385</Checksum>
       </Template>
       <Template dnOrder="8">
         <Name dnOrder="0">sys_devcon.c</Name>
@@ -318,7 +318,7 @@
       <Template dnOrder="9">
         <Name dnOrder="0">drv_adc_static.c</Name>
         <Path dnOrder="1">Source&amp;#160;Files/app/system_config/default/framework/driver/adc/src</Path>
-        <Checksum dnOrder="2">7D7FA5042ACC835CB77EECBE6CF077BC</Checksum>
+        <Checksum dnOrder="2">49E82D1866CF0B262A9E48F615A9A85E</Checksum>
       </Template>
       <Template dnOrder="10">
         <Name dnOrder="0">app.c</Name>
@@ -357,7 +357,7 @@
       <Template dnOrder="17">
         <Name dnOrder="0">system_config.h</Name>
         <Path dnOrder="1">Header&amp;#160;Files/app/system_config/default</Path>
-        <Checksum dnOrder="2">6815A39320445FD1CC114C48DE838BEA</Checksum>
+        <Checksum dnOrder="2">D71565109B1E38AF805071B299EC3289</Checksum>
       </Template>
       <Template dnOrder="18">
         <Name dnOrder="0">app.h</Name>

@@ -61,7 +61,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 #pragma config DEBUG =      OFF
 #pragma config JTAGEN =     OFF
-#pragma config ICESEL =     ICS_PGx2
+#pragma config ICESEL =     ICS_PGx3
 #pragma config SMCLR =      MCLR_NORM
 #pragma config PWP =        OFF
 #pragma config BWP =        OFF
@@ -119,7 +119,7 @@ const DRV_SDCARD_INIT drvSDCardInit =
     .sdcardSpeedHz = 30000000,
     .spiClk = CLK_BUS_PERIPHERAL_1,
     .chipSelectPort = PORT_CHANNEL_B,
-    .chipSelectBitPosition = PORTS_BIT_POS_8,
+    .chipSelectBitPosition = PORTS_BIT_POS_9,
 };
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="DRV_SPI Initialization Data"> 
