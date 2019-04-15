@@ -79,6 +79,7 @@ static uint32_t encoded_data_size;
 
 extern APP_SDCARD_WRITE_DATA appSDcardWriteData;
 
+int i;
 
 
 
@@ -162,7 +163,7 @@ void APP_Tasks ( void )
                     runtimeEncoderInst = &pcmEncoderInst;
                     si.sample_rate = AUDIO_ENCODE_SAMPLE_RATE;
                     si.channel = 1; // mono
-                    si.bit_depth = 16;// I don't know if 10 bit is supported, check later
+                    si.bit_depth = 16;// Must be 16 bit
                     si.bps = si.sample_rate * si.channel * si.bit_depth;
                     if (runtimeEncoderInst->enc_init(si.channel, si.sample_rate)) {
                         appData.state = APP_STATE_CONSTRUCT_WAV_HEADER;
@@ -172,8 +173,11 @@ void APP_Tasks ( void )
         
         case APP_STATE_PROCESS_DATA:
         {
-            outsize = 0;
-            runtimeEncoderInst->enc_one_frame(appData.sdBuffer,bufferSize,&appData.writeBuf[0],&outsize);
+            for(i=0;i<bufferSize;i++){
+                appData.sdBuffer[i] = appData.sdBuffer[i] << 6;
+            }
+            //outsize = 0;
+            //runtimeEncoderInst->enc_one_frame(appData.sdBuffer,bufferSize,&appData.writeBuf[0],&outsize);
             appData.state = APP_STATE_SERVICE_TASKS;
             break;
         }

@@ -14,9 +14,10 @@ void APP_SDCARD_WRITE_Initialize(void){
     appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_MOUNT;
     appSDcardWriteData.currentFilePosition = 0;
     appSDcardWriteData.dataParser.nElements = 0;
-    TRISBbits.TRISB2 = 0;
-    TRISBbits.TRISB3 = 0;
+    TRISBbits.TRISB0 = 0;
+    TRISBbits.TRISB1 = 0;
     TRISBbits.TRISB7 = 1;
+    CNPUBbits.CNPUB7 = 1;
     strcpy(appSDcardWriteData.currentFileName, "file0.wav");
     appSDcardWriteData.fileCount = 0;
     //strcpy(appSDcardWriteData.dataParser.buffer, "this is a test");
@@ -118,7 +119,7 @@ void APP_SDCARD_WRITE_Tasks(void){
             //if statement checks if we still have data to write
             if(sizeof(*appData.sdBuffer) > 0){
                 
-                nBytesToWrite = bufferSize;
+                nBytesToWrite = bufferSize*2;
 
                 
                 //writes data and checks if successful, if not, data writing is done
@@ -126,24 +127,24 @@ void APP_SDCARD_WRITE_Tasks(void){
                 SYS_FS_FileSeek(appSDcardWriteData.fileHandle, appSDcardWriteData.currentFilePosition, SYS_FS_SEEK_SET);
                 if(APP_SDCARD_WRITE_Write_SDCard(
                         appSDcardWriteData.fileHandle,
-                        &appData.writeBuf[0],
+                        appData.sdBuffer,
                         nBytesToWrite, &nBytesWrote)){
                     appSDcardWriteData.currentFilePosition += nBytesWrote;
                     
                 }
                 //appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_WRITE;
                 if(!PORTBbits.RB7){
-                    LATBbits.LATB2 = 1;
-                    LATBbits.LATB3 = 0;
+                    LATBbits.LATB0 = 1;
+                    LATBbits.LATB1 = 0;
                 }
                 SYS_FS_FileSync(appSDcardWriteData.fileHandle);
                 if(!PORTBbits.RB7){
-                    LATBbits.LATB2 = 0;
-                    LATBbits.LATB3 = 1;
+                    LATBbits.LATB0 = 0;
+                    LATBbits.LATB1 = 1;
                 }
                 else{
-                    LATBbits.LATB2 = 0;
-                    LATBbits.LATB3 = 0;
+                    LATBbits.LATB0 = 0;
+                    LATBbits.LATB1 = 0;
                 }
                 //appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_CURRENT_DRIVE_SET;
                 if(appSDcardWriteData.currentFilePosition > FILESIZE)
