@@ -45,9 +45,12 @@ static bool APP_SDCARD_WRITE_Write_SDCard(
 
 
 void APP_SDCARD_WRITE_Tasks(void){
+    SYS_FS_TIME time;
+    SYS_RTCC_BCD_DATE rtcDate;
+    SYS_RTCC_BCD_TIME rtcTime;
+    char filePath[22] = "/mnt/mydrive/file0.wav";
     switch(appSDcardWriteData.state){
         case APP_SDCARD_WRITE_STATE_CARD_MOUNT:
-            
             //waits for SDcard to be mounted
             if(SYS_FS_Mount("/dev/mmcblka1", "/mnt/myDrive", FAT, 0, NULL) != 0){
                 appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_MOUNT;
@@ -71,12 +74,14 @@ void APP_SDCARD_WRITE_Tasks(void){
                 
                 // if all is good, move onto reading the file size
                 else{
+
                     if(appSDcardWriteData.headerWrite){
                     appSDcardWriteData.state = APP_SDCARD_WRITE_HEADER;
                     appSDcardWriteData.headerWrite = 0;
                 }
                 else{
                     appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_WRITE;
+                    
                     }
                 }
             }
@@ -146,6 +151,17 @@ void APP_SDCARD_WRITE_Tasks(void){
                     LATBbits.LATB0 = 0;
                     LATBbits.LATB1 = 0;
                 }
+                                    SYS_RTCC_TimeGet(&rtcTime);
+                    SYS_RTCC_DateGet(&rtcDate);
+                    time.packedTime = 0;
+                    //time.discreteTime.year = ((2000+ rtcDate.year10*10 + rtcDate.year1) -1980);
+                    time.discreteTime.year = 39;
+                    time.discreteTime.month = 5;
+                    time.discreteTime.day = 3;
+                    time.discreteTime.hour = 13;
+                    time.discreteTime.minute = 5;
+                    time.discreteTime.second = 0;
+                    SYS_FS_FileDirectoryTimeSet("file0.wav",&time);
                 //appSDcardWriteData.state = APP_SDCARD_WRITE_STATE_CARD_CURRENT_DRIVE_SET;
                 if(appSDcardWriteData.currentFilePosition > FILESIZE)
                     appSDcardWriteData.state = APP_SDCARD_WRITE_INC_FILENAME;

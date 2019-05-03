@@ -50,6 +50,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include "system/common/sys_common.h"
 #include "system/common/sys_module.h"
 #include "system/devcon/sys_devcon.h"
+      #include "system/rtcc/sys_rtcc.h"
 #include "system/clk/sys_clk.h"
 #include "system/int/sys_int.h"
 #include "system/dma/sys_dma.h"
@@ -98,6 +99,7 @@ extern "C" {
 
 typedef struct
 {
+    SYS_MODULE_OBJ  sysRtcc;
     SYS_MODULE_OBJ  sysTmr;
     SYS_MODULE_OBJ  sysDma;
     SYS_MODULE_OBJ  drvTmr0;

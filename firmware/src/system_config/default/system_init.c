@@ -269,7 +269,9 @@ void SYS_Initialize ( void* data )
     SYS_INT_VectorSubprioritySet(INT_VECTOR_T1, INT_SUBPRIORITY_LEVEL0);
  
  
- 
+     /* RTCC System Service Initialization Call */
+    sysObj.sysRtcc = SYS_RTCC_Initialize( );
+
     /* Initialize System Services */
     SYS_PORTS_Initialize();
 

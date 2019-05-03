@@ -74,6 +74,7 @@ void SYS_Tasks ( void )
     /* Maintain system services */
     /* Maintain the file system state machine. */
     SYS_FS_Tasks();
+    SYS_RTCC_Tasks(sysObj.sysRtcc);
     /* SYS_TMR Device layer tasks routine */ 
     SYS_TMR_Tasks(sysObj.sysTmr);
 

@@ -154,8 +154,8 @@ void APP_Tasks ( void )
         
         case APP_STATE_ADC_WAIT:
         {
-            asm("nop");
-            break;
+            _wait();
+             break;
         }
         
         case APP_STATE_INIT_ENCODER:
